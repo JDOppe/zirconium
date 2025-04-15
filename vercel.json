@@ -7,9 +7,15 @@
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ]
+    { "src": "/bare/(.*)", "dest": "/src/index.js" },
+    { "src": "/sitemap.xml", "dest": "/src/index.js" },
+    { "src": "/uv/(.*)", "dest": "/uv/$1" },
+    { "src": "/baremux/(.*)", "dest": "/baremux/$1" },
+    { "src": "/(.*)", "dest": "/public/$1" }
+  ],
+  "websockets": {
+    "routes": [
+      { "src": "/wisp/(.*)", "dest": "/src/index.js" }
+    ]
+  }
 }
