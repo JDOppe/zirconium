@@ -9,7 +9,6 @@
   "routes": [
     { "src": "/bare/(.*)", "dest": "/src/index.js" },
     { "src": "/sitemap.xml", "dest": "/src/index.js" },
-    // Serve static files directly
     { "src": "/uv/(.*)", "dest": "/uv/$1" },
     { "src": "/baremux/(.*)", "dest": "/baremux/$1" },
     { "src": "/(.*)", "dest": "/public/$1" }
