@@ -1,6 +1,5 @@
 const { createBareServer } = require("@tomphttp/bare-server-node");
 const express = require("express");
-const { createServer } = require("node:http");
 const { uvPath } = require("@titaniumnetwork-dev/ultraviolet");
 const { hostname } = require("node:os");
 const { join } = require("path");
@@ -40,47 +39,18 @@ app.get("/sitemap.xml", (req, res) => {
   res.send(sitemap);
 });
 
-
-const server = createServer();
-
-server.on("request", (req, res) => {
+// Export the Express app as the handler for Vercel
+module.exports = (req, res) => {
   if (bare.shouldRoute(req)) {
     bare.routeRequest(req, res);
   } else {
     app(req, res);
   }
-});
+};
 
-server.on("upgrade", (req, socket, head) => {
-  if (bare.shouldRoute(req)) {
-    bare.routeUpgrade(req, socket, head);
-  } else if (req.url.endsWith('/wisp/')) {
-    wisp.routeRequest(req, socket, head);
-  } else {
-    socket.end();
-  }
-});
+// We don't need the createServer and listen calls in a serverless environment
+// The upgrade handling for WebSockets needs to be done differently on Vercel
+// Vercel provides specific ways to handle WebSockets in their environment
 
-let port = parseInt(process.env.PORT, 10);
-if (isNaN(port)) port = 8080;
-
-server.on("listening", () => {
-  const address = server.address();
-  console.log("Listening on:");
-  console.log(`\thttp://localhost:${address.port}`);
-  console.log(`\thttp://${hostname()}:${address.port}`);
-  console.log(`\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address}:${address.port}`);
-});
-
-// Graceful shutdown
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
-
-function shutdown() {
-  console.log("SIGTERM signal received: closing HTTP server");
-  server.close();
-  bare.close();
-  process.exit(0);
-}
-
-server.listen({ port });
+// The graceful shutdown logic is also not directly applicable in the same way
+// in a serverless environment.
