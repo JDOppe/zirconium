@@ -2,15 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "./src/index.js",
+      "src": "./index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
-    { "src": "/bare/(.*)", "dest": "/src/index.js" },
-    { "src": "/sitemap.xml", "dest": "/src/index.js" },
-    { "src": "/uv/(.*)", "dest": "/uv/$1" },
-    { "src": "/baremux/(.*)", "dest": "/baremux/$1" },
-    { "src": "/(.*)", "dest": "/public/$1" }
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
   ]
 }
