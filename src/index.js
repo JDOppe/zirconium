@@ -1,6 +1,6 @@
 const { createBareServer } = require("@tomphttp/bare-server-node");
 const express = require("express");
-const { createServer } = require("node:http"); // Keep the import
+const { createServer } = require("node:http");
 const { uvPath } = require("@titaniumnetwork-dev/ultraviolet");
 const { hostname } = require("node:os");
 const { join } = require("path");
@@ -13,7 +13,12 @@ const archiver = require('archiver');
 const bare = createBareServer("/bare/");
 const app = express();
 
-app.use(express.static("./public"));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.use("/uv/", express.static(uvPath));
 app.use('/baremux/', express.static(baremuxPath));
 
