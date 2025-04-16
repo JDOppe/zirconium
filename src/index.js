@@ -17,10 +17,6 @@ app.use(express.static("./public"));
 app.use("/uv/", express.static(uvPath));
 app.use('/baremux/', express.static(baremuxPath));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join('./public', 'index.html'));
-});
-
 const pages = [
   { url: "/", lastmod: "2024-01-01", priority: "1.0" },
 ];
