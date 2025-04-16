@@ -7,6 +7,10 @@ const path = require('path');
 const bare = createBareServer("/bare/");
 const app = express();
 
+app.get('/src', (req, res) => {
+  res.send('This is the /src route.');
+});
+
 // Serve static files from the 'public' directory at the root
 app.use(express.static(path.join(process.cwd(), 'public')));
 app.use("/uv/", express.static(uvPath));
