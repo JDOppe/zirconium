@@ -1,21 +1,20 @@
 const { createBareServer } = require("@tomphttp/bare-server-node");
 const express = require("express");
-const { createServer } = require("node:http");
 const { uvPath } = require("@titaniumnetwork-dev/ultraviolet");
-const { hostname } = require("node:os");
-const { join } = require("path");
-const wisp = require("wisp-server-node");
 const { baremuxPath } = require('@mercuryworkshop/bare-mux/node');
-const fs = require('fs');
 const path = require('path');
-const archiver = require('archiver');
 
 const bare = createBareServer("/bare/");
 const app = express();
 
-app.use(express.static("./public"));
+// Serve static files from the 'public' directory at the root
+app.use(express.static(path.join(__dirname, 'public')));
 app.use("/uv/", express.static(uvPath));
 app.use('/baremux/', express.static(baremuxPath));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const pages = [
   { url: "/", lastmod: "2024-01-01", priority: "1.0" },
@@ -40,7 +39,6 @@ app.get("/sitemap.xml", (req, res) => {
   res.send(sitemap);
 });
 
-
 const server = createServer();
 
 server.on("request", (req, res) => {
@@ -61,26 +59,37 @@ server.on("upgrade", (req, socket, head) => {
   }
 });
 
-let port = parseInt(process.env.PORT, 10);
-if (isNaN(port)) port = 8080;
+// The standalone server needs to start ONLY if not running on Vercel
+if (!process.env.VERCEL) {
+  let port = parseInt(process.env.PORT, 10);
+  if (isNaN(port)) port = 8080;
 
-server.on("listening", () => {
-  const address = server.address();
-  console.log("Listening on:");
-  console.log(`\thttp://localhost:${address.port}`);
-  console.log(`\thttp://${hostname()}:${address.port}`);
-  console.log(`\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address}:${address.port}`);
-});
+  server.on("listening", () => {
+    const address = server.address();
+    console.log("Listening on:");
+    console.log(`\thttp://localhost:${address.port}`);
+    console.log(`\thttp://${hostname()}:${address.port}`);
+    console.log(`\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address}:${address.port}`);
+  });
 
-// Graceful shutdown
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
+  // Graceful shutdown
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
 
-function shutdown() {
-  console.log("SIGTERM signal received: closing HTTP server");
-  server.close();
-  bare.close();
-  process.exit(0);
+  function shutdown() {
+    console.log("SIGTERM signal received: closing HTTP server");
+    server.close();
+    bare.close();
+    process.exit(0);
+  }
+
+  server.listen({ port });
 }
 
-server.listen({ port });
+module.exports = (req, res) => {
+  if (bare.shouldRoute(req)) {
+    bare.routeRequest(req, res);
+  } else {
+    app(req, res);
+  }
+};
