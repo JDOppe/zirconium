@@ -12,11 +12,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/uv/", express.static(uvPath));
 app.use('/baremux/', express.static(baremuxPath));
 
+// Explicitly handle the root path to serve index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Export the Express app as the Vercel handler
+// Handle all other requests by passing them to the Express app
 module.exports = (req, res) => {
   if (bare.shouldRoute(req)) {
     bare.routeRequest(req, res);
