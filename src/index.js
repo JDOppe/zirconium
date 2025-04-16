@@ -18,7 +18,7 @@ app.use("/uv/", express.static(uvPath));
 app.use('/baremux/', express.static(baremuxPath));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join('./public', 'index.html'));
 });
 
 const pages = [
