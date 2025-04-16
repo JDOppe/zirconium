@@ -1,4 +1,4 @@
 module.exports = (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end('<h1>Hello from Vercel!</h1>');
+  res.end('Hello from Vercel!');
 };
