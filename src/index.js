@@ -1,6 +1,6 @@
 const { createBareServer } = require("@tomphttp/bare-server-node");
 const express = require("express");
-const { createServer } = require("node:http");
+const { createServer } = require("node:http"); // Keep the import
 const { uvPath } = require("@titaniumnetwork-dev/ultraviolet");
 const { hostname } = require("node:os");
 const { join } = require("path");
@@ -40,7 +40,6 @@ app.get("/sitemap.xml", (req, res) => {
   res.send(sitemap);
 });
 
-
 const server = createServer();
 
 server.on("request", (req, res) => {
@@ -61,26 +60,37 @@ server.on("upgrade", (req, socket, head) => {
   }
 });
 
-let port = parseInt(process.env.PORT, 10);
-if (isNaN(port)) port = 8080;
+// The standalone server needs to start ONLY if not running on Vercel
+if (!process.env.VERCEL) {
+  let port = parseInt(process.env.PORT, 10);
+  if (isNaN(port)) port = 8080;
 
-server.on("listening", () => {
-  const address = server.address();
-  console.log("Listening on:");
-  console.log(`\thttp://localhost:${address.port}`);
-  console.log(`\thttp://${hostname()}:${address.port}`);
-  console.log(`\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address}:${address.port}`);
-});
+  server.on("listening", () => {
+    const address = server.address();
+    console.log("Listening on:");
+    console.log(`\thttp://localhost:${address.port}`);
+    console.log(`\thttp://${hostname()}:${address.port}`);
+    console.log(`\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address}:${address.port}`);
+  });
 
-// Graceful shutdown
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
+  // Graceful shutdown
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
 
-function shutdown() {
-  console.log("SIGTERM signal received: closing HTTP server");
-  server.close();
-  bare.close();
-  process.exit(0);
+  function shutdown() {
+    console.log("SIGTERM signal received: closing HTTP server");
+    server.close();
+    bare.close();
+    process.exit(0);
+  }
+
+  server.listen({ port });
 }
 
-server.listen({ port });
+module.exports = (req, res) => {
+  if (bare.shouldRoute(req)) {
+    bare.routeRequest(req, res);
+  } else {
+    app(req, res);
+  }
+};
