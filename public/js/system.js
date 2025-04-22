@@ -910,7 +910,7 @@ if (tab) {
 }
 
 var settingsDefaultTab = {
-  title: "arsenic",
+  title: "zirconium",
   icon: "./assets/favicon.png",
 };
 
