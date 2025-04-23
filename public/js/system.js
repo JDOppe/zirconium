@@ -232,7 +232,7 @@ if (particlesActive) {
 
 // Display time
 
-/*
+
 
 function displayTime() {
   const now = new Date();
@@ -249,7 +249,7 @@ function displayTime() {
 displayTime();
 setInterval(displayTime, 1000);
 
-*/
+
 
 // Load games
 
@@ -462,7 +462,7 @@ const modelDropdown = document.getElementById('ai-model');
 
 let chatHistory = [];
 
-const token = '';
+const token = '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';
 
 function getModel() {
   return localStorage.getItem('ai-model') || 'llama3-8B-8192';
