@@ -462,7 +462,7 @@ const modelDropdown = document.getElementById('ai-model');
 
 let chatHistory = [];
 
-const token = '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';
+const token = '';
 
 function getModel() {
   return localStorage.getItem('ai-model') || 'llama3-8B-8192';
