@@ -233,7 +233,7 @@ if (particlesActive) {
 // Display time
 
 
-
+/*
 function displayTime() {
   const now = new Date();
   const hours = now.getHours();
@@ -249,7 +249,7 @@ function displayTime() {
 displayTime();
 setInterval(displayTime, 1000);
 
-
+*/
 
 // Load games
 
