@@ -401,7 +401,7 @@ function addGameTab(gameId, gameName) {
   tabsContainer.appendChild(newTab);
 
   const newEmbed = document.createElement('iframe');
-  newEmbed.src = `./assets/games/${gameId}`;
+  newEmbed.src = `https://arsenic.smartfoloo.space/assets/games/${gameId}`;
   newEmbed.id = `${gameId}-embed`;
   newEmbed.classList.add('game-embed');
   newEmbed.style.display = 'none';
@@ -1006,14 +1006,13 @@ function resetTab() {
   localStorage.setItem("tab", JSON.stringify({}));
 }
 
-/*
+
 // Download Static Files
 
 document.getElementById('downloadFiles').addEventListener('click', function () {
   window.location.href = '/download-static-files';
 });
 
-*/
 
 
 // Themes
