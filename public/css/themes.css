@@ -1,35 +1,77 @@
-body[theme="blue"] {
-  --background: #232634;
-  --background2: #292c3c;
-  --background3: #414559;
-  --background4: #51576d;
-  --shadow: rgba(140, 170, 238, 0.5);
-  --blue: #8caaee;
-  --green: #a6d189;
-  --mauve: #ca9ee6;
-  --text: #c6d0f5;
+/* Sunset Theme */
+body[theme="sunset"] {
+  --background: #ffedd5;
+  --background2: #febd82;
+  --background3: #f97316;
+  --background4: #c2410c;
+  --shadow: rgba(255, 148, 77, 0.5);
+  --blue: #3b82f6;
+  --green: #22c55e;
+  --mauve: #a855f7;
+  --text: #4b5563;
 }
 
-body[theme="grey"] {
-  --background: #181926; /* crust */
-  --background2: #1e2030; /* base */
-  --background3: #363a4f; /* surface 0 */
-  --background4: #494d64; /* surface 1 */
-  --shadow: rgba(138, 173, 244, 0.5); /* blue with less opacity */
-  --blue: #8aadf4; /* blue */
-  --green: #a6da95; /* green */
-  --mauve: #c6a0f6; /* mauve */
-  --text: #cad3f5; /* text */
+/* Forest Theme */
+body[theme="forest"] {
+  --background: #1b4332;
+  --background2: #2d6a4f;
+  --background3: #40916c;
+  --background4: #52b788;
+  --shadow: rgba(74, 162, 123, 0.5);
+  --blue: #74c69d;
+  --green: #95d5b2;
+  --mauve: #d8f3dc;
+  --text: #edf6f9;
 }
 
-body[theme="black"] {
-  --background: #11111b;
-  --background2: #181825;
-  --background3: #313244;
-  --background4: #45475a;
-  --shadow: rgba(137, 180, 250, 0.5);
-  --blue: #89b4fa;
-  --green: #a6e3a1;
-  --mauve: #cba6f7;
-  --text: #cdd6f4;
+/* Ocean Theme */
+body[theme="ocean"] {
+  --background: #001f3f;
+  --background2: #003366;
+  --background3: #00509d;
+  --background4: #0077b6;
+  --shadow: rgba(0, 119, 182, 0.5);
+  --blue: #00b4d8;
+  --green: #90e0ef;
+  --mauve: #caf0f8;
+  --text: #e0fbfc;
+}
+
+/* Pastel Theme */
+body[theme="pastel"] {
+  --background: #fdfd96;
+  --background2: #ffb7b2;
+  --background3: #ff6961;
+  --background4: #aec6cf;
+  --shadow: rgba(255, 182, 193, 0.5);
+  --blue: #779ecb;
+  --green: #77dd77;
+  --mauve: #cfcfcf;
+  --text: #6b4226;
+}
+
+/* Neon Theme */
+body[theme="neon"] {
+  --background: #0f0f0f;
+  --background2: #1a1a1a;
+  --background3: #ff00ff;
+  --background4: #39ff14;
+  --shadow: rgba(255, 255, 0, 0.5);
+  --blue: #00ffff;
+  --green: #00ff00;
+  --mauve: #ff1493;
+  --text: #ffffff;
+}
+
+/* Monochrome Theme */
+body[theme="monochrome"] {
+  --background: #ffffff;
+  --background2: #e5e5e5;
+  --background3: #cccccc;
+  --background4: #808080;
+  --shadow: rgba(128, 128, 128, 0.5);
+  --blue: #333333;
+  --green: #666666;
+  --mauve: #999999;
+  --text: #000000;
 }
