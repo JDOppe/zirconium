@@ -88,46 +88,47 @@
       </div>
     </nav>
     <div class="main-content" id="main-content">
-  <div class="page" id="home-page">
-    <div class="home-page-container">
-      <div class="home-page-left">
-        <h1 class="welcome">Welcome</h1>
-        <p style="margin: 15px 0px; font-weight: 600;">
-          Zirconium is a web proxy with modern features such as Developer Tools integrated & saving Browser Data
-        </p>
-        <div class="buttons">
-          <div id="logout-sidebar">
-            <button class="logout-btn" role="button" onclick='const cookieName = "user_auth"; const domain = ".extratankz.com"; const path = "/"; const expires = "Thu, 01 Jan 1970 00:00:00 GMT"; document.cookie = `${cookieName}=; domain=${domain}; path=${path}; expires=${expires};`; window.location.replace("https://extratankz.com");'>
-              <i data-lucide="rocket"></i>
-            </button>
+      <div class="page" id="home-page">
+        <div class="home-page-container">
+          <div class="home-page-content">
+            <h1 class="welcome">Welcome</h1>
+            <p style="margin: 15px 0px; font-weight: 600;">
+              Zirconium is a web proxy with modern features such as Developer Tools integrated & saving Browser Data
+            </p>
+            <h2>Features</h2>
+            <ul class="features-list">
+              <li><i data-lucide="shield"></i> Secure and private browsing</li>
+              <li><i data-lucide="zap"></i> Fast and reliable proxy services</li>
+              <li><i data-lucide="tool"></i> Integrated developer tools</li>
+              <li><i data-lucide="database"></i> Save and manage browser data</li>
+              <li><i data-lucide="gamepad"></i> Host and play games seamlessly</li>
+              <li><i data-lucide="bot"></i> AI-powered chat and tools</li>
+            </ul>
+            <div class="get-started">
+              <button class="get-started-btn" onclick="window.location.href='/docs.html'">
+                <i data-lucide="book-open"></i>
+                Get Started!
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="home-page-right">
-        <h2>Features</h2>
-        <ul class="features-list">
-          <li><i data-lucide="shield"></i> Secure and private browsing</li>
-          <li><i data-lucide="zap"></i> Fast and reliable proxy services</li>
-          <li><i data-lucide="tool"></i> Integrated developer tools</li>
-          <li><i data-lucide="database"></i> Save and manage browser data</li>
-          <li><i data-lucide="gamepad"></i> Host and play games seamlessly</li>
-          <li><i data-lucide="bot"></i> AI-powered chat and tools</li>
-        </ul>
-        <div class="get-started">
-          <button class="get-started-btn" onclick="window.location.href='/docs.html'">
-            <i data-lucide="book-open"></i>
-            Get Started!
+      
+        <!-- Right Sidebar for Logout Button -->
+        <div id="logout-sidebar">
+          <button class="logout-btn" role="button" onclick='const cookieName = "user_auth"; const domain = ".extratankz.com"; const path = "/"; const expires = "Thu, 01 Jan 1970 00:00:00 GMT"; document.cookie = `${cookieName}=; domain=${domain}; path=${path}; expires=${expires};`; window.location.replace("https://extratankz.com");'>
+            <i data-lucide="rocket"></i>
           </button>
         </div>
+      
+        <!-- Sticky Resources Section -->
+        <div class="resources sticky-bottom">
+          <b>Resources</b>
+          <a href="./yt.html" target="_blank">
+            <i class="bi bi-youtube"></i>
+            YouTube Unblocker
+          </a>
+        </div>
       </div>
-    </div>
-    <div class="resources sticky-bottom">
-      <b>Resources</b>
-      <a href="./yt.html" target="_blank">
-        <i class="bi bi-youtube"></i>
-        YouTube Unblocker
-      </a>
-    </div>
     </div>
       </div>
       <div class="page" id="game-page">
