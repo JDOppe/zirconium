@@ -1206,14 +1206,30 @@ function draw(e) {
     if (!painting) return;
 
     const rect = canvas.getBoundingClientRect();
-    const outputText = `clientX: ${e.clientX}, clientY: ${e.clientY}, rect.left: ${rect.left}, rect.top: ${rect.top}`;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas to prevent overlapping text
-    ctx.font = '16px sans-serif';
-    ctx.fillStyle = 'black';
-    ctx.fillText(outputText, 10, 20); // Display the text at the top-left
+    ctx.lineWidth = brushSize;
+    ctx.lineCap = 'round';
+    ctx.lineTo(x, y);
 
-    ctx.beginPath(); // Keep this to potentially avoid issues with painting state
+    if (eraserMode) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.strokeStyle = '#000000';
+    } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = brushColor;
+    }
+
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+
+    createParticles(x, y);
+
+    if (!eraserMode) {
+        saveHistory();
+    }
 }
 
 function createParticles(x, y) {
@@ -1230,7 +1246,7 @@ function createParticles(x, y) {
     setTimeout(() => particle.remove(), 500);
 }
 
-painting = false;
+painting = false; // Ensure painting starts as false
 
 canvas.addEventListener('mousedown', startPosition);
 canvas.addEventListener('mouseup', endPosition);
