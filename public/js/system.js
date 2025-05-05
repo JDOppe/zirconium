@@ -1209,26 +1209,33 @@ function draw(e) {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    ctx.lineWidth = brushSize;
-    ctx.lineCap = 'round';
-    ctx.lineTo(x, y);
+    // Check if the mouse coordinates are within the canvas boundaries
+    if (x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height) {
+        ctx.lineWidth = brushSize;
+        ctx.lineCap = 'round';
+        ctx.lineTo(x, y);
 
-    if (eraserMode) {
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.strokeStyle = '#000000';
+        if (eraserMode) {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.strokeStyle = '#000000';
+        } else {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.strokeStyle = brushColor;
+        }
+
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+
+        createParticles(x, y);
+
+        if (!eraserMode) {
+            saveHistory();
+        }
     } else {
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.strokeStyle = brushColor;
-    }
-
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-
-    createParticles(x, y);
-
-    if (!eraserMode) {
-        saveHistory();
+        // If the cursor is off the canvas, stop painting
+        painting = false;
+        ctx.beginPath(); // Reset the path to avoid drawing a line back to the canvas
     }
 }
 
@@ -1249,6 +1256,14 @@ function createParticles(x, y) {
 canvas.addEventListener('mousedown', startPosition);
 canvas.addEventListener('mouseup', endPosition);
 canvas.addEventListener('mousemove', draw);
+
+// Add these event listeners to handle the cursor leaving the canvas
+canvas.addEventListener('mouseout', () => {
+    if (painting) {
+        endPosition(); // Stop painting if the mouse leaves while the button is down
+    }
+});
+canvas.addEventListener('mouseup', endPosition); // Ensure endPosition is called on mouseup off canvas too
 
 document.getElementById('clearCanvas').addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
