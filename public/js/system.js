@@ -1208,28 +1208,19 @@ function draw(e) {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+    const outputText = `clientX: ${e.clientX}, clientY: ${e.clientY}, rect.left: ${rect.left}, rect.top: ${rect.top}, x: ${x}, y: ${y}`;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '16px sans-serif';
+    ctx.fillStyle = 'black';
+    ctx.fillText(outputText, 10, 20);
 
     ctx.lineWidth = brushSize;
     ctx.lineCap = 'round';
     ctx.lineTo(x, y);
-
-    if (eraserMode) {
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.strokeStyle = '#000000';
-    } else {
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.strokeStyle = brushColor;
-    }
-
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(x, y);
-
-    createParticles(x, y);
-
-    if (!eraserMode) {
-        saveHistory();
-    }
 }
 
 function createParticles(x, y) {
