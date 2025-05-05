@@ -1156,32 +1156,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const history = [];
     let historyIndex = -1;
 
-    // Function to resize the canvas to fill its container
+    // Initialize canvas size
     function resizeCanvas() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
-        redraw(); // Redraw the history when resizing
+        redraw();
     }
 
-    // Function to get mouse position relative to the canvas
+    // Get mouse position relative to canvas
     function getMousePos(canvas, evt) {
-        const canvasRect = canvas.getBoundingClientRect();
-        const x = evt.clientX - canvasRect.left;
-        const y = evt.clientY - canvasRect.top;
-        console.log("clientX:", evt.clientX, "clientY:", evt.clientY, "left:", canvasRect.left, "top:", canvasRect.top, "x:", x, "y:", y);
+        const rect = canvas.getBoundingClientRect();
+        const x = evt.clientX - rect.left;
+        const y = evt.clientY - rect.top;
+        console.log("clientX:", evt.clientX, "clientY:", evt.clientY, "left:", rect.left, "top:", rect.top, "x:", x, "y:", y);
         return [x, y];
     }
 
-    // Function to start drawing
+    // Start drawing
     function startDrawing(e) {
         isDrawing = true;
         [lastX, lastY] = getMousePos(canvas, e);
-        // Save the current state to history before a new stroke
         history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
         historyIndex++;
     }
 
-    // Function to draw
+    // Draw function
     function draw(e) {
         if (!isDrawing) return;
         const [x, y] = getMousePos(canvas, e);
@@ -1198,26 +1197,28 @@ document.addEventListener('DOMContentLoaded', () => {
         lastY = y;
     }
 
-    // Function to stop drawing
+    // Stop drawing
     function endDrawing() {
         isDrawing = false;
     }
 
-    // Function to clear the canvas
+    // Clear canvas
     function clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Save the cleared state to history
         history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
         historyIndex++;
     }
 
-    // Function to change the brush size
+    // Change brush size
     function changeBrushSize(size) {
         currentBrushSize = parseInt(size);
-        document.getElementById('brush-size-preview').textContent = `${currentBrushSize}px`;
+        const brushSizePreview = document.getElementById('brush-size-preview');
+        if (brushSizePreview) {
+            brushSizePreview.textContent = `${currentBrushSize}px`;
+        }
     }
 
-    // Function to undo the last action
+    // Undo last action
     function undoLast() {
         if (historyIndex > 0) {
             historyIndex--;
@@ -1225,21 +1226,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to redraw the canvas from the history
+    // Redraw from history
     function redraw() {
         if (history[historyIndex]) {
             ctx.putImageData(history[historyIndex], 0, 0);
         }
     }
 
-    // Event listeners
+    // Event listeners for drawing
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', endDrawing);
     canvas.addEventListener('mouseout', endDrawing);
     window.addEventListener('resize', resizeCanvas);
 
-    // Button event listeners
+    // Event listeners for tools
     const clearButton = document.getElementById('clearCanvas');
     if (clearButton) {
         clearButton.addEventListener('click', clearCanvas);
@@ -1268,11 +1269,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const eraserTool = document.getElementById('eraserTool');
     if (eraserTool) {
         eraserTool.addEventListener('click', () => {
-            currentColor = 'white'; // Set color to white for erasing
+            currentColor = 'white';
         });
     }
 
-    // Initial canvas setup
+    // Initial setup
     resizeCanvas();
-    clearCanvas(); // Initialize with a clear canvas in history
+    clearCanvas();
 });
