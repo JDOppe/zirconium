@@ -1151,16 +1151,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
-    let currentColor = 'black';
-    let currentBrushSize = 5;
-    const history = [];
-    let historyIndex = -1;
 
     // Initialize canvas size
     function resizeCanvas() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
-        redraw();
     }
 
     // Get mouse position relative to canvas
@@ -1176,8 +1171,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function startDrawing(e) {
         isDrawing = true;
         [lastX, lastY] = getMousePos(canvas, e);
-        history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-        historyIndex++;
     }
 
     // Draw function
@@ -1188,8 +1181,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
         ctx.lineTo(x, y);
-        ctx.strokeStyle = currentColor;
-        ctx.lineWidth = currentBrushSize;
+        ctx.strokeStyle = 'black'; // Default color
+        ctx.lineWidth = 5;       // Default brush size
         ctx.lineCap = 'round';
         ctx.stroke();
 
@@ -1202,78 +1195,13 @@ document.addEventListener('DOMContentLoaded', () => {
         isDrawing = false;
     }
 
-    // Clear canvas
-    function clearCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-        historyIndex++;
-    }
-
-    // Change brush size
-    function changeBrushSize(size) {
-        currentBrushSize = parseInt(size);
-        const brushSizePreview = document.getElementById('brush-size-preview');
-        if (brushSizePreview) {
-            brushSizePreview.textContent = `${currentBrushSize}px`;
-        }
-    }
-
-    // Undo last action
-    function undoLast() {
-        if (historyIndex > 0) {
-            historyIndex--;
-            ctx.putImageData(history[historyIndex], 0, 0);
-        }
-    }
-
-    // Redraw from history
-    function redraw() {
-        if (history[historyIndex]) {
-            ctx.putImageData(history[historyIndex], 0, 0);
-        }
-    }
-
-    // Event listeners for drawing
+    // Event listeners for drawing ONLY
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', endDrawing);
     canvas.addEventListener('mouseout', endDrawing);
     window.addEventListener('resize', resizeCanvas);
 
-    // Event listeners for tools
-    const clearButton = document.getElementById('clearCanvas');
-    if (clearButton) {
-        clearButton.addEventListener('click', clearCanvas);
-    }
-
-    const undoButton = document.getElementById('undoButton');
-    if (undoButton) {
-        undoButton.addEventListener('click', undoLast);
-    }
-
-    const brushSlider = document.getElementById('brush-slider');
-    if (brushSlider) {
-        brushSlider.addEventListener('input', (e) => changeBrushSize(e.target.value));
-    }
-
-    const colorPickerButton = document.getElementById('color-picker-button');
-    if (colorPickerButton) {
-        colorPickerButton.addEventListener('click', () => {
-            const color = prompt('Enter color name or hex code:', currentColor);
-            if (color) {
-                currentColor = color;
-            }
-        });
-    }
-
-    const eraserTool = document.getElementById('eraserTool');
-    if (eraserTool) {
-        eraserTool.addEventListener('click', () => {
-            currentColor = 'white';
-        });
-    }
-
     // Initial setup
     resizeCanvas();
-    clearCanvas();
 });
