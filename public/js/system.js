@@ -1144,150 +1144,105 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Provided code snippet
-let canvas = document.getElementById('paintCanvas');
-let ctx = canvas.getContext('2d');
-let painting = false;
-let brushSize = 5;
-let brushColor = '#000000';
+const canvas = document.getElementById('paintCanvas');
+const ctx = canvas.getContext('2d');
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-function startPosition(e) {
-    painting = true;
-    draw(e);
-}
-
-function endPosition() {
-    painting = false;
-    ctx.beginPath();
-}
-
-let eraserMode = false;
-
-document.getElementById('eraserTool').addEventListener('click', () => {
-    eraserMode = !eraserMode;
-    if (eraserMode) {
-        document.getElementById('eraserTool').style.backgroundColor = '#ffcc00';
-    } else {
-        document.getElementById('eraserTool').style.backgroundColor = '';
-    }
-});
-
-let history = [];
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let currentColor = 'black';
+let currentBrushSize = 5;
+const history = [];
 let historyIndex = -1;
 
-function saveHistory() {
-    if (historyIndex < history.length - 1) {
-        history = history.slice(0, historyIndex + 1);
-    }
-    history.push(canvas.toDataURL());
+function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    redraw();
+}
+
+function startDrawing(e) {
+    isDrawing = true;
+    [lastX, lastY] = getMousePos(canvas, e);
+    history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
     historyIndex++;
 }
 
-document.getElementById('undoButton').addEventListener('click', () => {
+function draw(e) {
+    if (!isDrawing) return;
+    const [x, y] = getMousePos(canvas, e);
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = currentBrushSize;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    lastX = x;
+    lastY = y;
+}
+
+function endDrawing() {
+    isDrawing = false;
+}
+
+function getMousePos(canvas, evt) {
+    const canvasRect = canvas.getBoundingClientRect();
+    const x = evt.clientX - canvasRect.left;
+    const y = evt.clientY - canvasRect.top;
+    console.log("clientX:", evt.clientX, "clientY:", evt.clientY, "left:", canvasRect.left, "top:", canvasRect.top, "x:", x, "y:", y);
+    return [x, y];
+}
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    historyIndex++;
+}
+
+function changeBrushSize(size) {
+    currentBrushSize = size;
+    document.getElementById('brush-size-preview').textContent = `${size}px`;
+}
+
+function undoLast() {
     if (historyIndex > 0) {
         historyIndex--;
-        let undoState = new Image();
-        undoState.src = history[historyIndex];
-        undoState.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(undoState, 0, 0);
-        };
-    }
-});
-
-function draw(e) {
-    if (!painting) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const x = Math.round(e.clientX - rect.left);
-    const y = Math.round(e.clientY - rect.top);
-
-    ctx.lineWidth = brushSize;
-    ctx.lineCap = 'round';
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-
-    createParticles(x, y);
-
-    if (!eraserMode) {
-        saveHistory();
+        ctx.putImageData(history[historyIndex], 0, 0);
     }
 }
 
-function createParticles(x, y) {
-    let particle = document.createElement('div');
-    particle.classList.add('particle');
-    document.body.appendChild(particle);
-
-    let size = Math.random() * 5 + 2;
-    particle.style.left = `${x - 2}px`;
-    particle.style.top = `${y - 2}px`;
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-
-    setTimeout(() => particle.remove(), 500);
+function redraw() {
+    if (history[historyIndex]) {
+        ctx.putImageData(history[historyIndex], 0, 0);
+    }
 }
 
-painting = false; // Ensure painting starts as false
-
-canvas.addEventListener('mousedown', startPosition);
-canvas.addEventListener('mouseup', endPosition);
+// Event listeners
+canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', endDrawing);
+canvas.addEventListener('mouseout', endDrawing);
+window.addEventListener('resize', resizeCanvas);
+document.getElementById('clearCanvas').addEventListener('click', clearCanvas);
+document.getElementById('undoButton').addEventListener('click', undoLast);
+document.getElementById('brush-slider').addEventListener('input', (e) => changeBrushSize(e.target.value));
 
-canvas.addEventListener('mouseout', () => {
-    if (painting) {
-        endPosition();
+// Color picker functionality (basic example)
+document.getElementById('color-picker-button').addEventListener('click', () => {
+    const color = prompt('Enter color name or hex code:', currentColor);
+    if (color) {
+        currentColor = color;
     }
 });
 
-document.getElementById('clearCanvas').addEventListener('click', () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    history = [];
-    historyIndex = -1;
+// Eraser tool functionality (basic example)
+document.getElementById('eraserTool').addEventListener('click', () => {
+    currentColor = 'white'; // Set color to white for erasing
 });
 
-document.getElementById('brush-size-container').addEventListener('click', () => {
-    const sliderContainer = document.getElementById('brush-slider-container');
-    sliderContainer.style.display = sliderContainer.style.display === 'block' ? 'none' : 'block';
-});
-
-function changeBrushSize(value) {
-    brushSize = value;
-    document.getElementById('brush-size-preview').textContent = `${value}px`;
-}
-
-function updateColorPickerBackground() {
-    const colorPickerButton = document.getElementById('color-picker-button');
-    colorPickerButton.style.backgroundColor = brushColor;
-}
-
-document.getElementById('color-picker-button').addEventListener('click', () => {
-    let colorPicker = document.createElement('input');
-    colorPicker.setAttribute('type', 'color');
-    colorPicker.style.position = 'absolute';
-    colorPicker.style.zIndex = '1000';
-    colorPicker.addEventListener('input', (e) => {
-        brushColor = e.target.value;
-        updateColorPickerBackground();
-        document.body.removeChild(colorPicker);
-    });
-    document.body.appendChild(colorPicker);
-    colorPicker.click();
-});
-
-document.getElementById('brush-size-container').addEventListener('mouseover', () => {
-    document.getElementById('brush-size-container').style.backgroundColor = brushColor;
-});
-
-document.getElementById('brush-size-container').addEventListener('mouseout', () => {
-    document.getElementById('brush-size-container').style.backgroundColor = '#f3f3f3';
-});
+// Initial canvas setup
+resizeCanvas();
+clearCanvas(); // Initialize with a clear canvas in history
