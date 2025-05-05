@@ -1205,15 +1205,12 @@ document.getElementById('undoButton').addEventListener('click', () => {
 function draw(e) {
     if (!painting) return;
 
-    // Get canvas offset using offsetLeft and offsetTop
-    const offsetX = canvas.offsetLeft;
-    const offsetY = canvas.offsetTop;
-
-    const x = e.clientX - offsetX;
-    const y = e.clientY - offsetY;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
     console.log("clientX:", e.clientX, "clientY:", e.clientY);
-    console.log("offsetX:", offsetX, "offsetY:", offsetY);
+    console.log("rect:", rect); // Log the entire bounding rectangle
     console.log("Calculated x:", x, "Calculated y:", y);
 
     // Check if the mouse coordinates are within the canvas boundaries
