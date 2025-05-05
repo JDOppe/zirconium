@@ -1232,10 +1232,6 @@ function draw(e) {
         if (!eraserMode) {
             saveHistory();
         }
-    } else {
-        // If the cursor is off the canvas, stop painting
-        painting = false;
-        ctx.beginPath(); // Reset the path to avoid drawing a line back to the canvas
     }
 }
 
@@ -1253,17 +1249,19 @@ function createParticles(x, y) {
     setTimeout(() => particle.remove(), 500);
 }
 
+// Ensure 'painting' is initially false (it already is by default, but let's be explicit)
+painting = false;
+
+// The 'mousedown' event listener on the canvas is what initiates drawing
 canvas.addEventListener('mousedown', startPosition);
 canvas.addEventListener('mouseup', endPosition);
 canvas.addEventListener('mousemove', draw);
 
-// Add these event listeners to handle the cursor leaving the canvas
 canvas.addEventListener('mouseout', () => {
     if (painting) {
         endPosition(); // Stop painting if the mouse leaves while the button is down
     }
 });
-canvas.addEventListener('mouseup', endPosition); // Ensure endPosition is called on mouseup off canvas too
 
 document.getElementById('clearCanvas').addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
