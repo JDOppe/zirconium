@@ -1209,6 +1209,10 @@ function draw(e) {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
+    console.log("clientX:", e.clientX, "clientY:", e.clientY);
+    console.log("rect.left:", rect.left, "rect.top:", rect.top);
+    console.log("Calculated x:", x, "Calculated y:", y);
+
     // Check if the mouse coordinates are within the canvas boundaries
     if (x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height) {
         ctx.lineWidth = brushSize;
@@ -1249,17 +1253,15 @@ function createParticles(x, y) {
     setTimeout(() => particle.remove(), 500);
 }
 
-// Ensure 'painting' is initially false (it already is by default, but let's be explicit)
 painting = false;
 
-// The 'mousedown' event listener on the canvas is what initiates drawing
 canvas.addEventListener('mousedown', startPosition);
 canvas.addEventListener('mouseup', endPosition);
 canvas.addEventListener('mousemove', draw);
 
 canvas.addEventListener('mouseout', () => {
     if (painting) {
-        endPosition(); // Stop painting if the mouse leaves while the button is down
+        endPosition();
     }
 });
 
