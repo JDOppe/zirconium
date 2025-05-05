@@ -1144,105 +1144,135 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Provided code snippet
-const canvas = document.getElementById('paintCanvas');
-const ctx = canvas.getContext('2d');
+document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
 
-let isDrawing = false;
-let lastX = 0;
-let lastY = 0;
-let currentColor = 'black';
-let currentBrushSize = 5;
-const history = [];
-let historyIndex = -1;
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+    let currentColor = 'black';
+    let currentBrushSize = 5;
+    const history = [];
+    let historyIndex = -1;
 
-function resizeCanvas() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    redraw();
-}
-
-function startDrawing(e) {
-    isDrawing = true;
-    [lastX, lastY] = getMousePos(canvas, e);
-    history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-    historyIndex++;
-}
-
-function draw(e) {
-    if (!isDrawing) return;
-    const [x, y] = getMousePos(canvas, e);
-
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(x, y);
-    ctx.strokeStyle = currentColor;
-    ctx.lineWidth = currentBrushSize;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    lastX = x;
-    lastY = y;
-}
-
-function endDrawing() {
-    isDrawing = false;
-}
-
-function getMousePos(canvas, evt) {
-    const canvasRect = canvas.getBoundingClientRect();
-    const x = evt.clientX - canvasRect.left;
-    const y = evt.clientY - canvasRect.top;
-    console.log("clientX:", evt.clientX, "clientY:", evt.clientY, "left:", canvasRect.left, "top:", canvasRect.top, "x:", x, "y:", y);
-    return [x, y];
-}
-
-function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-    historyIndex++;
-}
-
-function changeBrushSize(size) {
-    currentBrushSize = size;
-    document.getElementById('brush-size-preview').textContent = `${size}px`;
-}
-
-function undoLast() {
-    if (historyIndex > 0) {
-        historyIndex--;
-        ctx.putImageData(history[historyIndex], 0, 0);
+    // Function to resize the canvas to fill its container
+    function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        redraw(); // Redraw the history when resizing
     }
-}
 
-function redraw() {
-    if (history[historyIndex]) {
-        ctx.putImageData(history[historyIndex], 0, 0);
+    // Function to get mouse position relative to the canvas
+    function getMousePos(canvas, evt) {
+        const canvasRect = canvas.getBoundingClientRect();
+        const x = evt.clientX - canvasRect.left;
+        const y = evt.clientY - canvasRect.top;
+        console.log("clientX:", evt.clientX, "clientY:", evt.clientY, "left:", canvasRect.left, "top:", canvasRect.top, "x:", x, "y:", y);
+        return [x, y];
     }
-}
 
-// Event listeners
-canvas.addEventListener('mousedown', startDrawing);
-canvas.addEventListener('mousemove', draw);
-canvas.addEventListener('mouseup', endDrawing);
-canvas.addEventListener('mouseout', endDrawing);
-window.addEventListener('resize', resizeCanvas);
-document.getElementById('clearCanvas').addEventListener('click', clearCanvas);
-document.getElementById('undoButton').addEventListener('click', undoLast);
-document.getElementById('brush-slider').addEventListener('input', (e) => changeBrushSize(e.target.value));
-
-// Color picker functionality (basic example)
-document.getElementById('color-picker-button').addEventListener('click', () => {
-    const color = prompt('Enter color name or hex code:', currentColor);
-    if (color) {
-        currentColor = color;
+    // Function to start drawing
+    function startDrawing(e) {
+        isDrawing = true;
+        [lastX, lastY] = getMousePos(canvas, e);
+        // Save the current state to history before a new stroke
+        history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        historyIndex++;
     }
+
+    // Function to draw
+    function draw(e) {
+        if (!isDrawing) return;
+        const [x, y] = getMousePos(canvas, e);
+
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = currentBrushSize;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        lastX = x;
+        lastY = y;
+    }
+
+    // Function to stop drawing
+    function endDrawing() {
+        isDrawing = false;
+    }
+
+    // Function to clear the canvas
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Save the cleared state to history
+        history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        historyIndex++;
+    }
+
+    // Function to change the brush size
+    function changeBrushSize(size) {
+        currentBrushSize = parseInt(size);
+        document.getElementById('brush-size-preview').textContent = `${currentBrushSize}px`;
+    }
+
+    // Function to undo the last action
+    function undoLast() {
+        if (historyIndex > 0) {
+            historyIndex--;
+            ctx.putImageData(history[historyIndex], 0, 0);
+        }
+    }
+
+    // Function to redraw the canvas from the history
+    function redraw() {
+        if (history[historyIndex]) {
+            ctx.putImageData(history[historyIndex], 0, 0);
+        }
+    }
+
+    // Event listeners
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDrawing);
+    canvas.addEventListener('mouseout', endDrawing);
+    window.addEventListener('resize', resizeCanvas);
+
+    // Button event listeners
+    const clearButton = document.getElementById('clearCanvas');
+    if (clearButton) {
+        clearButton.addEventListener('click', clearCanvas);
+    }
+
+    const undoButton = document.getElementById('undoButton');
+    if (undoButton) {
+        undoButton.addEventListener('click', undoLast);
+    }
+
+    const brushSlider = document.getElementById('brush-slider');
+    if (brushSlider) {
+        brushSlider.addEventListener('input', (e) => changeBrushSize(e.target.value));
+    }
+
+    const colorPickerButton = document.getElementById('color-picker-button');
+    if (colorPickerButton) {
+        colorPickerButton.addEventListener('click', () => {
+            const color = prompt('Enter color name or hex code:', currentColor);
+            if (color) {
+                currentColor = color;
+            }
+        });
+    }
+
+    const eraserTool = document.getElementById('eraserTool');
+    if (eraserTool) {
+        eraserTool.addEventListener('click', () => {
+            currentColor = 'white'; // Set color to white for erasing
+        });
+    }
+
+    // Initial canvas setup
+    resizeCanvas();
+    clearCanvas(); // Initialize with a clear canvas in history
 });
-
-// Eraser tool functionality (basic example)
-document.getElementById('eraserTool').addEventListener('click', () => {
-    currentColor = 'white'; // Set color to white for erasing
-});
-
-// Initial canvas setup
-resizeCanvas();
-clearCanvas(); // Initialize with a clear canvas in history
