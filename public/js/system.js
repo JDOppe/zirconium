@@ -1206,16 +1206,15 @@ function draw(e) {
     if (!painting) return;
 
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = Math.round(e.clientX - rect.left);
+    const y = Math.round(e.clientY - rect.top);
 
     ctx.lineWidth = brushSize;
     ctx.lineCap = 'round';
-
-    ctx.beginPath(); // Start a new path for each segment
-    ctx.moveTo(x, y); // Move to the current mouse position
-    ctx.lineTo(x, y); // Draw a line to the current mouse position (effectively a dot, but ensures the path starts here)
+    ctx.lineTo(x, y);
     ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
 
     createParticles(x, y);
 
