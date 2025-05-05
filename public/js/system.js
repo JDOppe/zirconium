@@ -1205,13 +1205,25 @@ document.getElementById('undoButton').addEventListener('click', () => {
 function draw(e) {
     if (!painting) return;
 
+    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+
+    // Calculate the canvas's absolute position relative to the document
+    const canvasAbsoluteLeft = rect.left + scrollLeft;
+    const canvasAbsoluteTop = rect.top + scrollTop;
+
+    // Calculate the mouse position relative to the canvas
+    const x = e.clientX - rect.left; // Still using rect.left for now to see if it changes
+    const y = e.clientY - rect.top; // Same for rect.top
 
     console.log("clientX:", e.clientX, "clientY:", e.clientY);
-    console.log("rect:", rect); // Log the entire bounding rectangle
-    console.log("Calculated x:", x, "Calculated y:", y);
+    console.log("rect:", rect);
+    console.log("scrollLeft:", scrollLeft, "scrollTop:", scrollTop);
+    console.log("canvasAbsoluteLeft:", canvasAbsoluteLeft, "canvasAbsoluteTop:", canvasAbsoluteTop);
+    console.log("Calculated x (relative to rect):", x, "Calculated y (relative to rect):", y);
+    console.log("Calculated x (absolute):", e.clientX - canvasAbsoluteLeft, "Calculated y (absolute):", e.clientY - canvasAbsoluteTop);
+
 
     // Check if the mouse coordinates are within the canvas boundaries
     if (x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height) {
@@ -1231,7 +1243,7 @@ function draw(e) {
         ctx.beginPath();
         ctx.moveTo(x, y);
 
-        createParticles(x, y);
+        createParticles(e.clientX - canvasAbsoluteLeft, e.clientY - canvasAbsoluteTop); // Use absolute position for particles
 
         if (!eraserMode) {
             saveHistory();
