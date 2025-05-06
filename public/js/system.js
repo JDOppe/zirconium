@@ -1314,12 +1314,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const clearCanvasButton = document.getElementById('clearCanvas');
-    if (clearCanvasButton && canvas && ctx && drawingEnabled) {
+    if (clearCanvasButton) { // Removed the && drawingEnabled here
         clearCanvasButton.addEventListener('click', () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            history = [];
-            historyIndex = -1;
-            saveHistory();
+            if (drawingEnabled && canvas && ctx) { // Check drawingEnabled inside the handler
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                history = [];
+                historyIndex = -1;
+                saveHistory();
+            }
         });
     }
 
