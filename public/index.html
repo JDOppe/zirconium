@@ -97,26 +97,665 @@
       <div class="page" id="home-page">
         <div class="home-page-container">
           <div class="home-page-left">
-            <h1 class="welcome">Welcome</h1>
+            <h1 class="welcome">Welcome to Zirconium</h1>
             <p style="margin: 15px 0px; font-weight: 600;">Zirconium is a web proxy with modern features such as Developer Tools integrated 
-& saving Browser Data</p>
-            <p style="margin: 15px 0px; font-weight: 1000;">Check out the settings page for themes that suit your desired look!</p>
-
+      & saving Browser Data</p>
+            <p style="margin: 15px 0px; font-weight: 600;">Check out the settings page for themes that suit your desired look!</p>
+      
+            <!-- Quick Stats Section -->
+            <div class="stats-container">
+              <div class="stat-card">
+                <i class="bi bi-stopwatch"></i>
+                <div class="stat-info">
+                  <h3>Fast Access</h3>
+                  <p>Ultraviolet proxy with optimized speed</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="bi bi-shield-check"></i>
+                <div class="stat-info">
+                  <h3>Privacy First</h3>
+                  <p>Browse securely with cloaking options</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <i class="bi bi-collection"></i>
+                <div class="stat-info">
+                  <h3>All-in-One</h3>
+                  <p>Games, AI, drawing tools and more</p>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Featured Section -->
+            <div class="featured-section">
+              <h2>Featured Content</h2>
+              <div class="featured-cards">
+                <div class="featured-card" onclick="openPage('game-page')">
+                  <div class="card-icon">
+                    <i class="bi bi-controller"></i>
+                  </div>
+                  <div class="card-content">
+                    <h3>Popular Games</h3>
+                    <p>Play the latest games directly in your browser</p>
+                  </div>
+                  <div class="card-arrow">
+                    <i class="bi bi-arrow-right"></i>
+                  </div>
+                </div>
+                <div class="featured-card" onclick="openPage('ai-page')">
+                  <div class="card-icon">
+                    <i class="bi bi-cpu"></i>
+                  </div>
+                  <div class="card-content">
+                    <h3>AI Assistant</h3>
+                    <p>Chat with advanced AI models for help</p>
+                  </div>
+                  <div class="card-arrow">
+                    <i class="bi bi-arrow-right"></i>
+                  </div>
+                </div>
+                <div class="featured-card" onclick="openPage('proxy-page')">
+                  <div class="card-icon">
+                    <i class="bi bi-globe"></i>
+                  </div>
+                  <div class="card-content">
+                    <h3>Unblock Websites</h3>
+                    <p>Access blocked content with our proxy</p>
+                  </div>
+                  <div class="card-arrow">
+                    <i class="bi bi-arrow-right"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Recent Updates Section -->
+            <div class="updates-section">
+              <h2>Recent Updates</h2>
+              <div class="update-list">
+                <div class="update-item">
+                  <div class="update-date">May 5, 2025</div>
+                  <div class="update-content">
+                    <h4>Drawing Tool Improved</h4>
+                    <p>Enhanced brush controls and canvas responsiveness</p>
+                  </div>
+                </div>
+                <div class="update-item">
+                  <div class="update-date">May 3, 2025</div>
+                  <div class="update-content">
+                    <h4>10 New Games Added</h4>
+                    <p>Check out the new multiplayer selections!</p>
+                  </div>
+                </div>
+                <div class="update-item">
+                  <div class="update-date">April 29, 2025</div>
+                  <div class="update-content">
+                    <h4>AI Models Updated</h4>
+                    <p>Added Llama3 support for better conversations</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
             <div class="buttons">
-              <button class="start" role="button" onclick='const cookieName = "user_auth"; const domain = ".extratankz.com"; const path = "/"; const expires = "Thu, 01 Jan 1970 00:00:00 GMT"; document.cookie = `${cookieName}=; domain=${domain}; path=${path}; expires=${expires};`;     window.location.replace("https://extratankz.com");'>
-                <i data-lucide="rocket"></i>
+              <button class="start" role="button" onclick='const cookieName = "user_auth"; const domain = ".extratankz.com"; const path = "/"; const expires = "Thu, 01 Jan 1970 00:00:00 GMT"; document.cookie = `${cookieName}=; domain=${domain}; path=${path}; expires=${expires};`; window.location.replace("https://extratankz.com");'>
+                <i data-lucide="log-out"></i>
                 Log out
               </button>
+              <button class="secondary-btn" onclick="window.open('https://extratankz.com/discord', '_blank')">
+                <i class="bi bi-discord"></i>
+                Join Discord
+              </button>
             </div>
+            
             <div class="resources">
-              <b>Resources</b>
-              <a href="./yt.html" target="_blank">
-                <i class="bi bi-youtube"></i>
-                YouTube Unblocker
-              </a>
+              <b>Quick Links</b>
+              <div class="resource-links">
+                <a href="./yt.html" target="_blank">
+                  <i class="bi bi-youtube"></i>
+                  YouTube Unblocker
+                </a>
+                <a href="#" onclick="openPage('settings-page')">
+                  <i class="bi bi-gear"></i>
+                  Settings & Themes
+                </a>
+                <a href="#" onclick="Swal.fire('Stay Updated!', 'Subscribe to get notified about new features and updates.', 'info')">
+                  <i class="bi bi-bell"></i>
+                  Subscribe for Updates
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- New right column for home page -->
+          <div class="home-page-right">
+            <div class="activity-panel">
+              <h3>Activity Center</h3>
+              <div id="activity-tabs" class="mini-tabs">
+                <button class="mini-tab active" data-tab="popular-games">Popular Games</button>
+                <button class="mini-tab" data-tab="tips">Quick Tips</button>
+              </div>
+              
+              <div id="popular-games" class="mini-tab-content active">
+                <div class="game-tile">
+                  <img src="./assets/games/slope.png" alt="Slope">
+                  <div class="game-info">
+                    <h4>Slope</h4>
+                    <p>Racing • Arcade</p>
+                  </div>
+                  <button onclick="loadGame('slope')">Play</button>
+                </div>
+                <div class="game-tile">
+                  <img src="./assets/games/subway-surfers.png" alt="Subway Surfers">
+                  <div class="game-info">
+                    <h4>Subway Surfers</h4>
+                    <p>Endless • Runner</p>
+                  </div>
+                  <button onclick="loadGame('subway-surfers')">Play</button>
+                </div>
+                <div class="game-tile">
+                  <img src="./assets/games/1v1-lol.png" alt="1v1.LOL">
+                  <div class="game-info">
+                    <h4>1v1.LOL</h4>
+                    <p>Shooter • Multiplayer</p>
+                  </div>
+                  <button onclick="loadGame('1v1-lol')">Play</button>
+                </div>
+              </div>
+              
+              <div id="tips" class="mini-tab-content">
+                <div class="tip-item">
+                  <i class="bi bi-lightbulb"></i>
+                  <p>Use <code>Ctrl+Alt+C</code> to quickly access the dev tools when browsing.</p>
+                </div>
+                <div class="tip-item">
+                  <i class="bi bi-lightbulb"></i>
+                  <p>Enable "about:blank cloaking" in settings for private browsing.</p>
+                </div>
+                <div class="tip-item">
+                  <i class="bi bi-lightbulb"></i>
+                  <p>Export your cookies to save your browsing progress across devices.</p>
+                </div>
+                <div class="tip-item">
+                  <i class="bi bi-lightbulb"></i>
+                  <p>Try different proxy backends for optimal performance on different sites.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="weather-widget">
+              <h3>Current Status</h3>
+              <div class="status-display">
+                <div class="status-item">
+                  <span class="status-label">Server Status:</span>
+                  <span class="status-value online"><i class="bi bi-circle-fill"></i> Online</span>
+                </div>
+                <div class="status-item">
+                  <span class="status-label">Active Users:</span>
+                  <span class="status-value">1,432</span>
+                </div>
+                <div class="status-item">
+                  <span class="status-label">Proxy Backend:</span>
+                  <span class="status-value">Ultraviolet</span>
+                </div>
+                <div class="status-item">
+                  <span class="status-label">Version:</span>
+                  <span class="status-value">0.1 (Beta)</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      
+      <!-- CSS Styles for the enhanced home page -->
+      <style>
+        /* Home page layout */
+        .home-page-container {
+          display: flex;
+          gap: 30px;
+          padding: 20px;
+        }
+        
+        .home-page-left {
+          flex: 2;
+        }
+        
+        .home-page-right {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+        
+        /* Stats section */
+        .stats-container {
+          display: flex;
+          justify-content: space-between;
+          gap: 15px;
+          margin: 25px 0;
+        }
+        
+        .stat-card {
+          background: linear-gradient(135deg, var(--accent-light), var(--accent));
+          border-radius: 12px;
+          padding: 15px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex: 1;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-card i {
+          font-size: 2rem;
+          color: var(--text-color);
+          opacity: 0.8;
+        }
+        
+        .stat-info h3 {
+          margin: 0;
+          font-size: 1.1rem;
+        }
+        
+        .stat-info p {
+          margin: 5px 0 0;
+          font-size: 0.85rem;
+          opacity: 0.8;
+        }
+        
+        /* Featured section */
+        .featured-section {
+          margin: 30px 0;
+        }
+        
+        .featured-section h2 {
+          margin-bottom: 15px;
+          font-weight: 700;
+          font-size: 1.5rem;
+        }
+        
+        .featured-cards {
+          display: flex;
+          gap: 15px;
+          flex-wrap: wrap;
+        }
+        
+        .featured-card {
+          background: var(--card-bg);
+          border-radius: 12px;
+          padding: 20px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          flex: 1;
+          min-width: 250px;
+          cursor: pointer;
+          transition: transform 0.3s, box-shadow 0.3s;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .featured-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-icon {
+          background: var(--primary);
+          width: 50px;
+          height: 50px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .card-icon i {
+          font-size: 1.5rem;
+          color: white;
+        }
+        
+        .card-content {
+          flex: 1;
+        }
+        
+        .card-content h3 {
+          margin: 0;
+          font-size: 1.1rem;
+        }
+        
+        .card-content p {
+          margin: 5px 0 0;
+          font-size: 0.85rem;
+          opacity: 0.7;
+        }
+        
+        .card-arrow {
+          opacity: 0.5;
+          transition: opacity 0.3s, transform 0.3s;
+        }
+        
+        .featured-card:hover .card-arrow {
+          opacity: 1;
+          transform: translateX(5px);
+        }
+        
+        /* Updates section */
+        .updates-section {
+          margin: 30px 0;
+        }
+        
+        .updates-section h2 {
+          margin-bottom: 15px;
+          font-weight: 700;
+          font-size: 1.5rem;
+        }
+        
+        .update-list {
+          background: var(--card-bg);
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .update-item {
+          display: flex;
+          padding: 15px;
+          border-bottom: 1px solid var(--border-color);
+        }
+        
+        .update-item:last-child {
+          border-bottom: none;
+        }
+        
+        .update-date {
+          width: 100px;
+          font-size: 0.85rem;
+          opacity: 0.7;
+          font-weight: 500;
+        }
+        
+        .update-content h4 {
+          margin: 0;
+          font-size: 1rem;
+        }
+        
+        .update-content p {
+          margin: 5px 0 0;
+          font-size: 0.85rem;
+          opacity: 0.7;
+        }
+        
+        /* Buttons */
+        .buttons {
+          display: flex;
+          gap: 15px;
+          margin: 25px 0;
+        }
+        
+        .secondary-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 20px;
+          border-radius: 8px;
+          background: var(--card-bg);
+          color: var(--text-color);
+          border: 1px solid var(--border-color);
+          cursor: pointer;
+          font-weight: 600;
+          transition: all 0.3s;
+        }
+        
+        .secondary-btn:hover {
+          background: var(--accent);
+          border-color: var(--accent);
+        }
+        
+        /* Resources */
+        .resources {
+          background: var(--card-bg);
+          border-radius: 12px;
+          padding: 15px;
+          margin-top: 20px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .resources b {
+          display: block;
+          margin-bottom: 10px;
+          font-size: 1.1rem;
+        }
+        
+        .resource-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        
+        .resources a {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+          color: var(--text-color);
+          padding: 8px 15px;
+          border-radius: 6px;
+          background: var(--bg-color);
+          transition: all 0.3s;
+          font-size: 0.9rem;
+        }
+        
+        .resources a:hover {
+          background: var(--accent);
+          color: white;
+        }
+        
+        /* Right column widgets */
+        .activity-panel, .weather-widget {
+          background: var(--card-bg);
+          border-radius: 12px;
+          padding: 20px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .activity-panel h3, .weather-widget h3 {
+          margin-top: 0;
+          margin-bottom: 15px;
+          font-size: 1.2rem;
+          font-weight: 700;
+        }
+        
+        /* Mini tabs */
+        .mini-tabs {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 15px;
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 10px;
+        }
+        
+        .mini-tab {
+          background: none;
+          border: none;
+          font-size: 0.9rem;
+          padding: 5px 10px;
+          cursor: pointer;
+          opacity: 0.6;
+          transition: all 0.3s;
+          border-radius: 4px;
+          font-weight: 500;
+          color: var(--text-color);
+        }
+        
+        .mini-tab.active {
+          background: var(--accent);
+          color: white;
+          opacity: 1;
+        }
+        
+        .mini-tab:hover:not(.active) {
+          background: var(--bg-color);
+          opacity: 0.9;
+        }
+        
+        .mini-tab-content {
+          display: none;
+        }
+        
+        .mini-tab-content.active {
+          display: block;
+        }
+        
+        /* Game tiles */
+        .game-tile {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px;
+          margin-bottom: 10px;
+          border-radius: 8px;
+          background: var(--bg-color);
+          transition: all 0.3s;
+        }
+        
+        .game-tile:hover {
+          background: var(--border-color);
+        }
+        
+        .game-tile img {
+          width: 40px;
+          height: 40px;
+          border-radius: 6px;
+          object-fit: cover;
+        }
+        
+        .game-info {
+          flex: 1;
+        }
+        
+        .game-info h4 {
+          margin: 0;
+          font-size: 0.95rem;
+        }
+        
+        .game-info p {
+          margin: 2px 0 0;
+          font-size: 0.75rem;
+          opacity: 0.7;
+        }
+        
+        .game-tile button {
+          background: var(--primary);
+          color: white;
+          border: none;
+          border-radius: 4px;
+          padding: 5px 10px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+        
+        .game-tile button:hover {
+          background: var(--primary-light);
+        }
+        
+        /* Tips */
+        .tip-item {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 12px;
+          padding-bottom: 12px;
+          border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tip-item:last-child {
+          margin-bottom: 0;
+          padding-bottom: 0;
+          border-bottom: none;
+        }
+        
+        .tip-item i {
+          font-size: 1.2rem;
+          color: var(--accent);
+        }
+        
+        .tip-item p {
+          margin: 0;
+          font-size: 0.9rem;
+          line-height: 1.4;
+        }
+        
+        .tip-item code {
+          background: var(--bg-color);
+          padding: 2px 5px;
+          border-radius: 4px;
+          font-size: 0.85rem;
+        }
+        
+        /* Status widget */
+        .status-display {
+          background: var(--bg-color);
+          border-radius: 8px;
+          padding: 15px;
+        }
+        
+        .status-item {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          font-size: 0.9rem;
+        }
+        
+        .status-item:last-child {
+          margin-bottom: 0;
+        }
+        
+        .status-label {
+          opacity: 0.7;
+        }
+        
+        .status-value {
+          font-weight: 600;
+        }
+        
+        .status-value.online {
+          color: #10b981;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
+        
+        .status-value.online i {
+          font-size: 0.6rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+          .home-page-container {
+            flex-direction: column;
+          }
+          
+          .home-page-right {
+            width: 100%;
+          }
+          
+          .stats-container {
+            flex-direction: column;
+          }
+          
+          .featured-cards {
+            flex-direction: column;
+          }
+        }
+      </style>
       </div>
       <div class="page" id="game-page">
         <h1>Games</h1>
