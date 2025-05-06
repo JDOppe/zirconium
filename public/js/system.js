@@ -1356,3 +1356,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+function setCanvasSize() {
+    const canvas = document.getElementById('paintCanvas');
+    const container = document.querySelector('.canvas-container');
+    if (canvas && container) {
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.border = '1px solid green';
+        console.log("Canvas size set to:", width, height);
+    } else {
+        console.error("Canvas or container not found.");
+    }
+}
+
+window.addEventListener('load', () => {
+    function delayedSetCanvasSize() {
+        setCanvasSize();
+    }
+    setTimeout(delayedSetCanvasSize, 150);
+    window.addEventListener('resize', setCanvasSize);
+});
