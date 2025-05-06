@@ -1285,7 +1285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const clearCanvasButton = document.getElementById('clearCanvas');
-    if (clearCanvasButton && canvas && ctx && drawingEnabled) { // Ensure drawingEnabled for clear
+    if (clearCanvasButton && canvas && ctx && drawingEnabled) {
         clearCanvasButton.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             history = [];
@@ -1303,26 +1303,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const colorPickerButton = document.getElementById('color-picker-button');
-    if (colorPickerButton && drawingEnabled) { // Ensure drawingEnabled for color picker
+    if (colorPickerButton) { // Removed the && drawingEnabled here
         colorPickerButton.addEventListener('click', () => {
-            let colorPicker = document.createElement('input');
-            colorPicker.setAttribute('type', 'color');
-            colorPicker.style.position = 'absolute';
-            colorPicker.style.zIndex = '1000';
-            colorPicker.addEventListener('input', (e) => {
-                brushColor = e.target.value;
-                const colorPickerButton = document.getElementById('color-picker-button');
-                if (colorPickerButton) {
-                    colorPickerButton.style.backgroundColor = brushColor;
-                }
-                document.body.removeChild(colorPicker);
-            });
-            document.body.appendChild(colorPicker);
-            colorPicker.click();
+            if (drawingEnabled) {
+                let colorPicker = document.createElement('input');
+                colorPicker.setAttribute('type', 'color');
+                colorPicker.style.position = 'absolute';
+                colorPicker.style.zIndex = '1000';
+                colorPicker.addEventListener('input', (e) => {
+                    brushColor = e.target.value;
+                    const colorPickerButton = document.getElementById('color-picker-button');
+                    if (colorPickerButton) {
+                        colorPickerButton.style.backgroundColor = brushColor;
+                    }
+                    document.body.removeChild(colorPicker);
+                });
+                document.body.appendChild(colorPicker);
+                colorPicker.click();
+            }
         });
     }
 
-    if (brushSizeContainer && drawingEnabled) { // Ensure drawingEnabled for brush size hover
+    if (brushSizeContainer && drawingEnabled) {
         brushSizeContainer.addEventListener('mouseover', () => {
             brushSizeContainer.style.backgroundColor = brushColor;
         });
