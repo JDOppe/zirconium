@@ -1157,14 +1157,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function setCanvasSize() {
         const container = document.querySelector('.canvas-container');
         if (container) {
-            // Try getting dimensions again, in case layout has shifted
             const width = container.offsetWidth;
             const height = container.offsetHeight;
             canvas.width = width;
             canvas.height = height;
             redrawHistory();
-            canvas.style.border = '1px solid blue'; // Changed border color for clarity
-            console.log("Canvas size set to:", width, height); // Log the size
+            canvas.style.border = '1px solid blue';
+            console.log("Canvas size set to:", width, height);
         } else {
             console.error("Canvas container not found.");
         }
@@ -1183,10 +1182,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial canvas size, try again after a short delay
-    setCanvasSize();
-    setTimeout(setCanvasSize, 100); // Try again after 100 milliseconds
+    function initCanvas() {
+        setCanvasSize();
+        setTimeout(setCanvasSize, 100); // Keep the timeout as a secondary measure
+    }
 
+    requestAnimationFrame(initCanvas); // Call initCanvas using requestAnimationFrame
     window.addEventListener('resize', setCanvasSize);
 
     function getMousePos(canvas, e) {
