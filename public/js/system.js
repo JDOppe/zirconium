@@ -1250,6 +1250,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const brushSizeContainer = document.getElementById('brush-size-container');
     const brushSliderContainer = document.getElementById('brush-slider-container');
+    const brushSlider = document.getElementById('brush-slider');
+    const brushSizePreview = document.getElementById('brush-size-preview');
 
     function enableDrawing() {
         setCanvasSize();
@@ -1258,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             brushSizeContainer.style.backgroundColor = brushColor;
             brushSizeContainer.removeEventListener('click', enableDrawing);
             brushSizeContainer.addEventListener('click', () => {
-                if (drawingEnabled) {
+                if (drawingEnabled && brushSliderContainer) {
                     brushSliderContainer.style.display = brushSliderContainer.style.display === 'block' ? 'none' : 'block';
                 }
             });
@@ -1279,9 +1281,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function changeBrushSize(value) {
+        brushSize = value;
+        if (brushSizePreview) {
+            brushSizePreview.textContent = `${value}px`;
+        }
+        if (ctx) {
+            ctx.lineWidth = brushSize; // Update lineWidth immediately
+        }
+    }
+
     if (brushSizeContainer) {
         brushSizeContainer.addEventListener('click', enableDrawing);
         brushSizeContainer.style.cursor = 'pointer';
+    }
+
+    if (brushSlider) {
+        brushSlider.addEventListener('input', (e) => {
+            changeBrushSize(e.target.value);
+        });
     }
 
     if (canvas) {
@@ -1303,14 +1321,6 @@ document.addEventListener('DOMContentLoaded', () => {
             historyIndex = -1;
             saveHistory();
         });
-    }
-
-    function changeBrushSize(value) {
-        brushSize = value;
-        const brushSizePreview = document.getElementById('brush-size-preview');
-        if (brushSizePreview) {
-            brushSizePreview.textContent = `${value}px`;
-        }
     }
 
     const colorPickerButton = document.getElementById('color-picker-button');
