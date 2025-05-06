@@ -1157,11 +1157,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function setCanvasSize() {
         const container = document.querySelector('.canvas-container');
         if (container) {
-            canvas.width = container.offsetWidth;
-            canvas.height = container.offsetHeight;
+            // Try getting dimensions again, in case layout has shifted
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+            canvas.width = width;
+            canvas.height = height;
             redrawHistory();
-            // Debugging style to make the canvas visually apparent
-            canvas.style.border = '1px solid red';
+            canvas.style.border = '1px solid blue'; // Changed border color for clarity
+            console.log("Canvas size set to:", width, height); // Log the size
         } else {
             console.error("Canvas container not found.");
         }
@@ -1180,8 +1183,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Set initial canvas size
+    // Initial canvas size, try again after a short delay
     setCanvasSize();
+    setTimeout(setCanvasSize, 100); // Try again after 100 milliseconds
 
     window.addEventListener('resize', setCanvasSize);
 
