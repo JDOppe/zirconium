@@ -1162,7 +1162,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const height = container.offsetHeight;
             canvas.width = width;
             canvas.height = height;
-            canvas.style.border = '1px solid teal'; // Different color to indicate button click
+            canvas.style.border = '1px solid teal';
             console.log("Canvas size set on Brush Tool click. Size:", width, height);
             redrawHistory();
         } else {
@@ -1255,23 +1255,22 @@ document.addEventListener('DOMContentLoaded', () => {
         setCanvasSize();
         drawingEnabled = true;
         if (brushSizeContainer) {
-            // Optionally change the appearance of the button to indicate it's active
             brushSizeContainer.style.backgroundColor = brushColor;
-            brushSizeContainer.removeEventListener('click', enableDrawing); // Prevent re-triggering
-            brushSizeContainer.addEventListener('click', () => { // Re-enable slider toggle
+            brushSizeContainer.removeEventListener('click', enableDrawing);
+            brushSizeContainer.addEventListener('click', () => {
                 if (drawingEnabled) {
                     brushSliderContainer.style.display = brushSliderContainer.style.display === 'block' ? 'none' : 'block';
                 }
             });
         }
         if (brushSliderContainer) {
-            brushSliderContainer.style.display = 'none'; // Hide slider initially
+            brushSliderContainer.style.display = 'none';
         }
     }
 
     if (brushSizeContainer) {
-        brushSizeContainer.addEventListener('click', enableDrawing); // Use the brush size button to start
-        brushSizeContainer.style.cursor = 'pointer'; // Indicate it's interactive
+        brushSizeContainer.addEventListener('click', enableDrawing);
+        brushSizeContainer.style.cursor = 'pointer';
     }
 
     if (canvas) {
@@ -1286,14 +1285,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const clearCanvasButton = document.getElementById('clearCanvas');
-    if (clearCanvasButton && canvas && ctx) {
+    if (clearCanvasButton && canvas && ctx && drawingEnabled) { // Ensure drawingEnabled for clear
         clearCanvasButton.addEventListener('click', () => {
-            if (drawingEnabled) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                history = [];
-                historyIndex = -1;
-                saveHistory();
-            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            history = [];
+            historyIndex = -1;
+            saveHistory();
         });
     }
 
@@ -1306,37 +1303,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const colorPickerButton = document.getElementById('color-picker-button');
-    if (colorPickerButton) {
+    if (colorPickerButton && drawingEnabled) { // Ensure drawingEnabled for color picker
         colorPickerButton.addEventListener('click', () => {
-            if (drawingEnabled) {
-                let colorPicker = document.createElement('input');
-                colorPicker.setAttribute('type', 'color');
-                colorPicker.style.position = 'absolute';
-                colorPicker.style.zIndex = '1000';
-                colorPicker.addEventListener('input', (e) => {
-                    brushColor = e.target.value;
-                    const colorPickerButton = document.getElementById('color-picker-button');
-                    if (colorPickerButton) {
-                        colorPickerButton.style.backgroundColor = brushColor;
-                    }
-                    document.body.removeChild(colorPicker);
-                });
-                document.body.appendChild(colorPicker);
-                colorPicker.click();
-            }
+            let colorPicker = document.createElement('input');
+            colorPicker.setAttribute('type', 'color');
+            colorPicker.style.position = 'absolute';
+            colorPicker.style.zIndex = '1000';
+            colorPicker.addEventListener('input', (e) => {
+                brushColor = e.target.value;
+                const colorPickerButton = document.getElementById('color-picker-button');
+                if (colorPickerButton) {
+                    colorPickerButton.style.backgroundColor = brushColor;
+                }
+                document.body.removeChild(colorPicker);
+            });
+            document.body.appendChild(colorPicker);
+            colorPicker.click();
         });
     }
 
-    if (brushSizeContainer) {
+    if (brushSizeContainer && drawingEnabled) { // Ensure drawingEnabled for brush size hover
         brushSizeContainer.addEventListener('mouseover', () => {
-            if (drawingEnabled) {
-                brushSizeContainer.style.backgroundColor = brushColor;
-            }
+            brushSizeContainer.style.backgroundColor = brushColor;
         });
         brushSizeContainer.addEventListener('mouseout', () => {
-            if (drawingEnabled) {
-                brushSizeContainer.style.backgroundColor = '#f3f3f3';
-            }
+            brushSizeContainer.style.backgroundColor = '#f3f3f3';
         });
     }
 
@@ -1345,4 +1336,44 @@ document.addEventListener('DOMContentLoaded', () => {
             setCanvasSize();
         }
     });
+
+    const eraserTool = document.getElementById('eraserTool');
+    if (eraserTool) {
+        eraserTool.addEventListener('click', () => {
+            console.log("Eraser tool clicked. drawingEnabled:", drawingEnabled);
+            if (drawingEnabled) {
+                eraserMode = !eraserMode;
+                eraserTool.style.backgroundColor = eraserMode ? '#ffcc00' : '';
+                console.log("Eraser mode:", eraserMode);
+            }
+        });
+    }
+
+    const undoButton = document.getElementById('undoButton');
+    if (undoButton) {
+        undoButton.addEventListener('click', () => {
+            console.log("Undo button clicked. drawingEnabled:", drawingEnabled, "historyIndex:", historyIndex);
+            if (drawingEnabled && historyIndex > 0 && canvas && ctx) {
+                historyIndex--;
+                let undoState = new Image();
+                undoState.src = history[historyIndex];
+                undoState.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(undoState, 0, 0);
+                };
+            }
+        });
+    }
+
+    function saveHistory() {
+        if (drawingEnabled) {
+            console.log("Saving history. historyIndex before:", historyIndex, "history length:", history.length);
+            if (historyIndex < history.length - 1) {
+                history = history.slice(0, historyIndex + 1);
+            }
+            history.push(canvas.toDataURL());
+            historyIndex++;
+            console.log("History saved. historyIndex after:", historyIndex, "history length:", history.length);
+        }
+    }
 });
