@@ -1158,7 +1158,7 @@ function resizeCanvas() {
     if (container) {
         canvas.width = container.offsetWidth;
         canvas.height = container.offsetHeight;
-        redrawHistory(); // Redraw the history after resizing
+        redrawHistory();
     }
 }
 
@@ -1188,6 +1188,7 @@ function getMousePos(canvas, e) {
 }
 
 function startPosition(e) {
+    e.preventDefault(); // Prevent default drag behavior
     painting = true;
     draw(e);
 }
@@ -1271,6 +1272,7 @@ painting = false;
 canvas.addEventListener('mousedown', startPosition);
 canvas.addEventListener('mouseup', endPosition);
 canvas.addEventListener('mousemove', draw);
+
 canvas.addEventListener('mouseout', () => {
     if (painting) {
         endPosition();
@@ -1281,7 +1283,7 @@ document.getElementById('clearCanvas').addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     history = [];
     historyIndex = -1;
-    saveHistory(); // Save the cleared state
+    saveHistory();
 });
 
 document.getElementById('brush-size-container').addEventListener('click', () => {
