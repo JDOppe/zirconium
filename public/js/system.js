@@ -1153,7 +1153,7 @@ let eraserMode = false;
 let history = [];
 let historyIndex = -1;
 
-function resizeCanvas() {
+function setCanvasSize() {
     const container = document.querySelector('.canvas-container');
     if (container) {
         canvas.width = container.offsetWidth;
@@ -1175,20 +1175,20 @@ function redrawHistory() {
     });
 }
 
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+// Set initial canvas size
+setCanvasSize();
+
+window.addEventListener('resize', setCanvasSize);
 
 function getMousePos(canvas, e) {
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     return { x, y };
 }
 
 function startPosition(e) {
-    e.preventDefault(); // Prevent default drag behavior
+    e.preventDefault();
     painting = true;
     draw(e);
 }
