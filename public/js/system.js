@@ -1149,14 +1149,43 @@ let ctx = canvas.getContext('2d');
 let painting = false;
 let brushSize = 5;
 let brushColor = '#000000';
+let eraserMode = false;
+let history = [];
+let historyIndex = -1;
 
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const container = document.querySelector('.canvas-container');
+    if (container) {
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+        redrawHistory(); // Redraw the history after resizing
+    }
+}
+
+function redrawHistory() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    history.forEach((imgData, index) => {
+        if (index <= historyIndex && imgData) {
+            let img = new Image();
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0);
+            };
+            img.src = imgData;
+        }
+    });
 }
 
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
+
+function getMousePos(canvas, e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+    return { x, y };
+}
 
 function startPosition(e) {
     painting = true;
@@ -1168,19 +1197,10 @@ function endPosition() {
     ctx.beginPath();
 }
 
-let eraserMode = false;
-
 document.getElementById('eraserTool').addEventListener('click', () => {
     eraserMode = !eraserMode;
-    if (eraserMode) {
-        document.getElementById('eraserTool').style.backgroundColor = '#ffcc00';
-    } else {
-        document.getElementById('eraserTool').style.backgroundColor = '';
-    }
+    document.getElementById('eraserTool').style.backgroundColor = eraserMode ? '#ffcc00' : '';
 });
-
-let history = [];
-let historyIndex = -1;
 
 function saveHistory() {
     if (historyIndex < history.length - 1) {
@@ -1205,9 +1225,9 @@ document.getElementById('undoButton').addEventListener('click', () => {
 function draw(e) {
     if (!painting) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const pos = getMousePos(canvas, e);
+    const x = pos.x;
+    const y = pos.y;
 
     ctx.lineWidth = brushSize;
     ctx.lineCap = 'round';
@@ -1246,12 +1266,11 @@ function createParticles(x, y) {
     setTimeout(() => particle.remove(), 500);
 }
 
-painting = false; // Ensure painting starts as false
+painting = false;
 
 canvas.addEventListener('mousedown', startPosition);
 canvas.addEventListener('mouseup', endPosition);
 canvas.addEventListener('mousemove', draw);
-
 canvas.addEventListener('mouseout', () => {
     if (painting) {
         endPosition();
@@ -1262,6 +1281,7 @@ document.getElementById('clearCanvas').addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     history = [];
     historyIndex = -1;
+    saveHistory(); // Save the cleared state
 });
 
 document.getElementById('brush-size-container').addEventListener('click', () => {
