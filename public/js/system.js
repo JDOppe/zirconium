@@ -1262,6 +1262,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     brushSliderContainer.style.display = brushSliderContainer.style.display === 'block' ? 'none' : 'block';
                 }
             });
+            // Attach hover listeners AFTER drawing is enabled
+            brushSizeContainer.addEventListener('mouseover', () => {
+                if (drawingEnabled) {
+                    brushSizeContainer.style.backgroundColor = brushColor;
+                }
+            });
+            brushSizeContainer.addEventListener('mouseout', () => {
+                if (drawingEnabled) {
+                    brushSizeContainer.style.backgroundColor = '#f3f3f3';
+                }
+            });
         }
         if (brushSliderContainer) {
             brushSliderContainer.style.display = 'none';
@@ -1303,7 +1314,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const colorPickerButton = document.getElementById('color-picker-button');
-    if (colorPickerButton) { // Removed the && drawingEnabled here
+    if (colorPickerButton) {
         colorPickerButton.addEventListener('click', () => {
             if (drawingEnabled) {
                 let colorPicker = document.createElement('input');
@@ -1324,15 +1335,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (brushSizeContainer && drawingEnabled) {
-        brushSizeContainer.addEventListener('mouseover', () => {
-            brushSizeContainer.style.backgroundColor = brushColor;
-        });
-        brushSizeContainer.addEventListener('mouseout', () => {
-            brushSizeContainer.style.backgroundColor = '#f3f3f3';
-        });
-    }
-
     window.addEventListener('resize', () => {
         if (drawingEnabled) {
             setCanvasSize();
@@ -1342,11 +1344,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const eraserTool = document.getElementById('eraserTool');
     if (eraserTool) {
         eraserTool.addEventListener('click', () => {
-            console.log("Eraser tool clicked. drawingEnabled:", drawingEnabled);
             if (drawingEnabled) {
                 eraserMode = !eraserMode;
                 eraserTool.style.backgroundColor = eraserMode ? '#ffcc00' : '';
-                console.log("Eraser mode:", eraserMode);
             }
         });
     }
@@ -1354,7 +1354,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const undoButton = document.getElementById('undoButton');
     if (undoButton) {
         undoButton.addEventListener('click', () => {
-            console.log("Undo button clicked. drawingEnabled:", drawingEnabled, "historyIndex:", historyIndex);
             if (drawingEnabled && historyIndex > 0 && canvas && ctx) {
                 historyIndex--;
                 let undoState = new Image();
@@ -1369,13 +1368,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveHistory() {
         if (drawingEnabled) {
-            console.log("Saving history. historyIndex before:", historyIndex, "history length:", history.length);
             if (historyIndex < history.length - 1) {
                 history = history.slice(0, historyIndex + 1);
             }
             history.push(canvas.toDataURL());
             historyIndex++;
-            console.log("History saved. historyIndex after:", historyIndex, "history length:", history.length);
         }
     }
 });
