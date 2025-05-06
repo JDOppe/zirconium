@@ -244,22 +244,30 @@
 
 <!-- Updated CSS for the drawing tool - add this to your styles or replace existing drawing CSS -->
 <style>
+  .page#draw-page {
+    width: 100%; /* Make sure it takes full width */
+    height: 100%; /* Try to make it take full height of its parent */
+    display: flex; /* Use flexbox to control child height */
+    flex-direction: column; /* Stack children vertically */
+  }
+  
   .drawing-app-container {
     position: relative;
     width: 100%;
-    height: calc(100vh - 160px);
+    height: calc(100vh - 160px); /* Keep this for now */
     margin-top: 20px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; /* Allow it to take up remaining vertical space */
   }
-
+  
   .canvas-container {
     width: 100%;
-    height: 100%;
-    background-color: white; 
+    height: 100%; /* Should now fill the height of .drawing-app-container */
+    background-color: white;
   }
-
+  
   #paintCanvas {
     cursor: crosshair;
     display: block;
