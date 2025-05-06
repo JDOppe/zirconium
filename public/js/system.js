@@ -1144,40 +1144,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Provided code snippet
-function setCanvasSize() {
-    const canvas = document.getElementById('paintCanvas');
-    const container = document.querySelector('.canvas-container');
-    if (canvas && container) {
-        const width = container.offsetWidth;
-        const height = container.offsetHeight;
-        canvas.width = width;
-        canvas.height = height;
-        // Optional: Add border for debugging
-        canvas.style.border = '1px solid green';
-        console.log("Canvas size set to:", width, height);
-    } else {
-        console.error("Canvas or container not found.");
-    }
-}
-
-// Call setCanvasSize repeatedly with a small delay
-function initializeCanvasSize() {
-    setCanvasSize();
-    setTimeout(setCanvasSize, 50);
-    setTimeout(setCanvasSize, 250);
-    setTimeout(setCanvasSize, 750);
-}
-
-// Initialize canvas size
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeCanvasSize);
-} else {
-    initializeCanvasSize();
-}
-
-window.addEventListener('resize', setCanvasSize);
-
-// Rest of your drawing logic (mousedown, mousemove, draw, etc.) remains the same
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('paintCanvas');
     const ctx = canvas.getContext('2d');
@@ -1187,6 +1153,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let eraserMode = false;
     let history = [];
     let historyIndex = -1;
+    let drawingEnabled = false; // Flag to control drawing
+
+    function setCanvasSize() {
+        const container = document.querySelector('.canvas-container');
+        if (canvas && container) {
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.border = '1px solid teal'; // Different color to indicate button click
+            console.log("Canvas size set on Brush Tool click. Size:", width, height);
+            redrawHistory();
+        } else {
+            console.error("Canvas or container not found.");
+        }
+    }
 
     function redrawHistory() {
         if (!canvas || !ctx) return;
@@ -1203,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getMousePos(canvas, e) {
-        if (!canvas) return { x: 0, y: 0 };
+        if (!canvas || !drawingEnabled) return { x: -1, y: -1 };
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -1211,49 +1193,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startPosition(e) {
+        if (!drawingEnabled) return;
         e.preventDefault();
         painting = true;
         draw(e);
     }
 
     function endPosition() {
+        if (!drawingEnabled) return;
         painting = false;
         if (ctx) ctx.beginPath();
     }
 
-    const eraserTool = document.getElementById('eraserTool');
-    if (eraserTool) {
-        eraserTool.addEventListener('click', () => {
-            eraserMode = !eraserMode;
-            eraserTool.style.backgroundColor = eraserMode ? '#ffcc00' : '';
-        });
-    }
-
-    const undoButton = document.getElementById('undoButton');
-    if (undoButton) {
-        undoButton.addEventListener('click', () => {
-            if (historyIndex > 0 && canvas && ctx) {
-                historyIndex--;
-                let undoState = new Image();
-                undoState.src = history[historyIndex];
-                undoState.onload = () => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(undoState, 0, 0);
-                };
-            }
-        });
-    }
-
     function draw(e) {
-        if (!painting || !canvas || !ctx) return;
+        if (!painting || !canvas || !ctx || !drawingEnabled) return;
 
         const pos = getMousePos(canvas, e);
-        const x = pos.x;
-        const y = pos.y;
+        if (pos.x === -1 && pos.y === -1) return;
 
         ctx.lineWidth = brushSize;
         ctx.lineCap = 'round';
-        ctx.lineTo(x, y);
+        ctx.lineTo(pos.x, pos.y);
 
         if (eraserMode) {
             ctx.globalCompositeOperation = 'destination-out';
@@ -1265,9 +1225,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(x, y);
+        ctx.moveTo(pos.x, pos.y);
 
-        createParticles(x, y);
+        createParticles(pos.x, pos.y);
 
         if (!eraserMode) {
             saveHistory();
@@ -1288,14 +1248,38 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => particle.remove(), 500);
     }
 
-    painting = false;
+    const brushSizeContainer = document.getElementById('brush-size-container');
+    const brushSliderContainer = document.getElementById('brush-slider-container');
+
+    function enableDrawing() {
+        setCanvasSize();
+        drawingEnabled = true;
+        if (brushSizeContainer) {
+            // Optionally change the appearance of the button to indicate it's active
+            brushSizeContainer.style.backgroundColor = brushColor;
+            brushSizeContainer.removeEventListener('click', enableDrawing); // Prevent re-triggering
+            brushSizeContainer.addEventListener('click', () => { // Re-enable slider toggle
+                if (drawingEnabled) {
+                    brushSliderContainer.style.display = brushSliderContainer.style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        }
+        if (brushSliderContainer) {
+            brushSliderContainer.style.display = 'none'; // Hide slider initially
+        }
+    }
+
+    if (brushSizeContainer) {
+        brushSizeContainer.addEventListener('click', enableDrawing); // Use the brush size button to start
+        brushSizeContainer.style.cursor = 'pointer'; // Indicate it's interactive
+    }
 
     if (canvas) {
         canvas.addEventListener('mousedown', startPosition);
         canvas.addEventListener('mouseup', endPosition);
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseout', () => {
-            if (painting) {
+            if (painting && drawingEnabled) {
                 endPosition();
             }
         });
@@ -1304,18 +1288,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearCanvasButton = document.getElementById('clearCanvas');
     if (clearCanvasButton && canvas && ctx) {
         clearCanvasButton.addEventListener('click', () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            history = [];
-            historyIndex = -1;
-            saveHistory();
-        });
-    }
-
-    const brushSizeContainer = document.getElementById('brush-size-container');
-    const brushSliderContainer = document.getElementById('brush-slider-container');
-    if (brushSizeContainer && brushSliderContainer) {
-        brushSizeContainer.addEventListener('click', () => {
-            brushSliderContainer.style.display = brushSliderContainer.style.display === 'block' ? 'none' : 'block';
+            if (drawingEnabled) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                history = [];
+                historyIndex = -1;
+                saveHistory();
+            }
         });
     }
 
@@ -1330,52 +1308,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorPickerButton = document.getElementById('color-picker-button');
     if (colorPickerButton) {
         colorPickerButton.addEventListener('click', () => {
-            let colorPicker = document.createElement('input');
-            colorPicker.setAttribute('type', 'color');
-            colorPicker.style.position = 'absolute';
-            colorPicker.style.zIndex = '1000';
-            colorPicker.addEventListener('input', (e) => {
-                brushColor = e.target.value;
-                const colorPickerButton = document.getElementById('color-picker-button');
-                if (colorPickerButton) {
-                    colorPickerButton.style.backgroundColor = brushColor;
-                }
-                document.body.removeChild(colorPicker);
-            });
-            document.body.appendChild(colorPicker);
-            colorPicker.click();
+            if (drawingEnabled) {
+                let colorPicker = document.createElement('input');
+                colorPicker.setAttribute('type', 'color');
+                colorPicker.style.position = 'absolute';
+                colorPicker.style.zIndex = '1000';
+                colorPicker.addEventListener('input', (e) => {
+                    brushColor = e.target.value;
+                    const colorPickerButton = document.getElementById('color-picker-button');
+                    if (colorPickerButton) {
+                        colorPickerButton.style.backgroundColor = brushColor;
+                    }
+                    document.body.removeChild(colorPicker);
+                });
+                document.body.appendChild(colorPicker);
+                colorPicker.click();
+            }
         });
     }
 
     if (brushSizeContainer) {
         brushSizeContainer.addEventListener('mouseover', () => {
-            brushSizeContainer.style.backgroundColor = brushColor;
+            if (drawingEnabled) {
+                brushSizeContainer.style.backgroundColor = brushColor;
+            }
         });
         brushSizeContainer.addEventListener('mouseout', () => {
-            brushSizeContainer.style.backgroundColor = '#f3f3f3';
+            if (drawingEnabled) {
+                brushSizeContainer.style.backgroundColor = '#f3f3f3';
+            }
         });
     }
-});
 
-function setCanvasSize() {
-    const canvas = document.getElementById('paintCanvas');
-    const container = document.querySelector('.canvas-container');
-    if (canvas && container) {
-        const width = container.offsetWidth;
-        const height = container.offsetHeight;
-        canvas.width = width;
-        canvas.height = height;
-        canvas.style.border = '1px solid green';
-        console.log("Canvas size set to:", width, height);
-    } else {
-        console.error("Canvas or container not found.");
-    }
-}
-
-window.addEventListener('load', () => {
-    function delayedSetCanvasSize() {
-        setCanvasSize();
-    }
-    setTimeout(delayedSetCanvasSize, 150);
-    window.addEventListener('resize', setCanvasSize);
+    window.addEventListener('resize', () => {
+        if (drawingEnabled) {
+            setCanvasSize();
+        }
+    });
 });
