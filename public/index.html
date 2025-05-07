@@ -908,8 +908,26 @@
             <h1><a href="javascript:void(0);" onclick="triggerEasterEgg()">S</a>ettings</h1>
             
             <style>
-              #fire-overlay {
-                position: fixed;
+              .fire-effect {
+                background-image: url('https://i.pinimg.com/originals/b7/21/34/b72134112b54864e4948865375ecbb11.gif');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                mix-blend-mode: overlay; /* Experiment with other modes */
+                pointer-events: none; /* To allow interaction with the underlying content */
+                position: relative; /* Create a stacking context */
+                z-index: 1; /* Ensure the fire is above the element's background */
+              }
+            
+              /* Prevent the fire effect from being applied to the <html> and <body> */
+              html.on-fire,
+              body.on-fire {
+                background: none !important; /* Remove any existing backgrounds */
+              }
+            
+              .on-fire *::before {
+                content: '';
+                position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
@@ -919,26 +937,14 @@
                 background-repeat: no-repeat;
                 background-position: center;
                 mix-blend-mode: overlay; /* Experiment with other modes */
-                pointer-events: none; /* Allows clicks to pass through the overlay */
-                z-index: 9999; /* Ensure it's on top of everything */
-                opacity: 0; /* Initially hidden */
-                transition: opacity 0.3s ease-in-out; /* Optional smooth fade-in */
-              }
-            
-              body.on-fire #fire-overlay {
-                opacity: 1;
+                pointer-events: none;
+                z-index: 1;
               }
             </style>
-            
-            <div id="fire-overlay"></div>
             
             <script>
               function triggerEasterEgg() {
                 document.body.classList.add('on-fire');
-                // Optional: Remove the class after a certain duration to stop the effect
-                // setTimeout(() => {
-                //   document.body.classList.remove('on-fire');
-                // }, 5000); // Remove after 5 seconds
               }
             </script>
             <div class="settings-container">
