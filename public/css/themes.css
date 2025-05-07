@@ -75,3 +75,16 @@ body[theme="monochrome"] {
   --mauve: #999999;
   --text: #000000;
 }
+
+/* Fire Theme */
+body[theme="fire"] {
+  --background: #330000; /* Dark reddish background */
+  --background2: #660000; /* Slightly lighter red */
+  --background3: #990000; /* Medium red */
+  --background4: #cc3300; /* Orange-red */
+  --shadow: rgba(255, 69, 0, 0.5); /* Orange shadow */
+  --blue: #ff4500; /* Bright orange-red */
+  --green: #ff8c00; /* Dark orange */
+  --mauve: #ff6347; /* Tomato red */
+  --text: #ffdab9; /* Peachpuff (light text for contrast) */
+}
