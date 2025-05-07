@@ -401,7 +401,7 @@ function addGameTab(gameId, gameName) {
   tabsContainer.appendChild(newTab);
 
   const newEmbed = document.createElement('iframe');
-  newEmbed.src = `https://extratankz,com/public/${gameId}`;
+  newEmbed.src = `https://extratankz.com/public/${gameId}`;
   newEmbed.id = `${gameId}-embed`;
   newEmbed.classList.add('game-embed');
   newEmbed.style.display = 'none';
