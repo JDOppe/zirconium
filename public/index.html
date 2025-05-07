@@ -905,7 +905,21 @@
             </div>
          </div>
          <div class="page" id="settings-page">
-            <h1><a href="javascript:document.body.innerHTML = '<img src=\'https://i.gifer.com/origin/a0/a07ad08920f303f655251b1a0b353b86_w200.gif\' alt=\'Explosion\'>'; void(0);">S</a>ettings</h1>
+            <h1><a href="javascript:void(0);" onclick="triggerEasterEgg()">S</a>ettings</h1>
+            <script>
+              function triggerEasterEgg() {
+                const fireGifUrl = 'https://i.pinimg.com/originals/b7/21/34/b72134112b54864e4948865375ecbb11.gif';
+                const allElements = document.querySelectorAll('*');
+            
+                allElements.forEach(element => {
+                  element.style.backgroundImage = `url('${fireGifUrl}')`;
+                  element.style.backgroundSize = 'cover'; // Or 'contain', adjust as needed
+                  element.style.backgroundRepeat = 'no-repeat';
+                  element.style.backgroundPosition = 'center'; // Adjust as needed
+                  element.style.mixBlendMode = 'overlay'; // Or 'multiply', 'screen', etc. Experiment for best effect
+                });
+              }
+            </script>
             <div class="settings-container">
                <div class="settings-tabs">
                   <button class="tab-link" onclick="openTab(event, 'appearance')">
