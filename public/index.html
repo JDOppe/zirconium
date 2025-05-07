@@ -906,18 +906,39 @@
          </div>
          <div class="page" id="settings-page">
             <h1><a href="javascript:void(0);" onclick="triggerEasterEgg()">S</a>ettings</h1>
+            
+            <style>
+              #fire-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('https://i.pinimg.com/originals/b7/21/34/b72134112b54864e4948865375ecbb11.gif');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                mix-blend-mode: overlay; /* Experiment with other modes */
+                pointer-events: none; /* Allows clicks to pass through the overlay */
+                z-index: 9999; /* Ensure it's on top of everything */
+                opacity: 0; /* Initially hidden */
+                transition: opacity 0.3s ease-in-out; /* Optional smooth fade-in */
+              }
+            
+              body.on-fire #fire-overlay {
+                opacity: 1;
+              }
+            </style>
+            
+            <div id="fire-overlay"></div>
+            
             <script>
               function triggerEasterEgg() {
-                const fireGifUrl = 'https://i.pinimg.com/originals/b7/21/34/b72134112b54864e4948865375ecbb11.gif';
-                const allElements = document.querySelectorAll('*');
-            
-                allElements.forEach(element => {
-                  element.style.backgroundImage = `url('${fireGifUrl}')`;
-                  element.style.backgroundSize = 'cover'; // Or 'contain', adjust as needed
-                  element.style.backgroundRepeat = 'no-repeat';
-                  element.style.backgroundPosition = 'center'; // Adjust as needed
-                  element.style.mixBlendMode = 'overlay'; // Or 'multiply', 'screen', etc. Experiment for best effect
-                });
+                document.body.classList.add('on-fire');
+                // Optional: Remove the class after a certain duration to stop the effect
+                // setTimeout(() => {
+                //   document.body.classList.remove('on-fire');
+                // }, 5000); // Remove after 5 seconds
               }
             </script>
             <div class="settings-container">
