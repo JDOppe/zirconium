@@ -908,7 +908,7 @@
             <h1><a href="javascript:void(0);" onclick="triggerEasterEgg()">S</a>ettings</h1>
             
             <style>
-              .fire-overlay {
+              #fire-overlay {
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -933,18 +933,12 @@
             <div id="fire-overlay"></div>
             
             <script>
-              let easterEggActive = false;
-            
               function triggerEasterEgg() {
-                if (!easterEggActive) {
-                  document.body.classList.add('on-fire');
-                  easterEggActive = true;
-                  // Optional: Remove the effect after a certain duration
-                  // setTimeout(() => {
-                  //   document.body.classList.remove('on-fire');
-                  //   easterEggActive = false;
-                  // }, 5000);
-                }
+                document.body.classList.add('on-fire');
+                // Optional: Remove the class after a certain duration to stop the effect
+                // setTimeout(() => {
+                //   document.body.classList.remove('on-fire');
+                // }, 5000); // Remove after 5 seconds
               }
             </script>
             <div class="settings-container">
