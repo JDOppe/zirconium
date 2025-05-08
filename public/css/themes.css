@@ -88,3 +88,146 @@ body[theme="fire"] {
   --mauve: #ff6347; /* Tomato red */
   --text: #ffdab9; /* Peachpuff (light text for contrast) */
 }
+
+/* Dark Mode Theme */
+body[theme="dark"] {
+  --background: #121212;
+  --background2: #1e1e1e;
+  --background3: #2c2c2c;
+  --background4: #424242;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --blue: #64b5f6;
+  --green: #81c784;
+  --mauve: #ba68c8;
+  --text: #e0e0e0;
+}
+
+/* Light Mode Theme */
+body[theme="light"] {
+  --background: #f5f5f5;
+  --background2: #eeeeee;
+  --background3: #e0e0e0;
+  --background4: #bdbdbd;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --blue: #1e88e5;
+  --green: #43a047;
+  --mauve: #8e24aa;
+  --text: #212121;
+}
+
+/* Solarized Light Theme */
+body[theme="solarized-light"] {
+  --background: #fdf6e3;
+  --background2: #eee8d5;
+  --background3: #dcd7ba;
+  --background4: #b8bdd2;
+  --shadow: rgba(101, 123, 131, 0.1);
+  --blue: #268bd2;
+  --green: #859900;
+  --mauve: #d33682;
+  --text: #586e75;
+}
+
+/* Solarized Dark Theme */
+body[theme="solarized-dark"] {
+  --background: #002b36;
+  --background2: #073642;
+  --background3: #586e75;
+  --background4: #657b83;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --blue: #839496;
+  --green: #b8c25d;
+  --mauve: #d33682;
+  --text: #eee8d5;
+}
+
+/* Cyberpunk Theme */
+body[theme="cyberpunk"] {
+  --background: #000000;
+  --background2: #111111;
+  --background3: #222222;
+  --background4: #444444;
+  --shadow: rgba(0, 255, 255, 0.3);
+  --blue: #00ffff;
+  --green: #00ff00;
+  --mauve: #ff00ff;
+  --text: #ffffff;
+}
+
+/* Retro Blue Theme */
+body[theme="retro-blue"] {
+  --background: #ddeeff;
+  --background2: #aaccee;
+  --background3: #77aacc;
+  --background4: #4488aa;
+  --shadow: rgba(68, 136, 170, 0.3);
+  --blue: #006699;
+  --green: #008080;
+  --mauve: #8a2be2;
+  --text: #000080;
+}
+
+/* Autumn Theme */
+body[theme="autumn"] {
+  --background: #fff8e1;
+  --background2: #ffecb3;
+  --background3: #ffd54f;
+  --background4: #ffb300;
+  --shadow: rgba(255, 179, 0, 0.3);
+  --blue: #a1887f;
+  --green: #8bc34a;
+  --mauve: #d4ac0d;
+  --text: #3e2723;
+}
+
+/* Spring Theme */
+body[theme="spring"] {
+  --background: #f0f8ff;
+  --background2: #e0ffff;
+  --background3: #ccffff;
+  --background4: #b0e0e6;
+  --shadow: rgba(176, 224, 230, 0.3);
+  --blue: #6495ed;
+  --green: #98fb98;
+  --mauve: #dda0dd;
+  --text: #008080;
+}
+
+/* Winter Theme */
+body[theme="winter"] {
+  --background: #f8f8ff;
+  --background2: #e6e6fa;
+  --background3: #d8bfd8;
+  --background4: #c0c0c0;
+  --shadow: rgba(192, 192, 192, 0.3);
+  --blue: #87ceeb;
+  --green: #90ee90;
+  --mauve: #e066ff;
+  --text: #4682b4;
+}
+
+/* Desert Theme */
+body[theme="desert"] {
+  --background: #f5f5dc;
+  --background2: #f0e68c;
+  --background3: #deb887;
+  --background4: #d2b48c;
+  --shadow: rgba(210, 180, 140, 0.3);
+  --blue: #8fbc8f;
+  --green: #a0522d;
+  --mauve: #b8860b;
+  --text: #8b4513;
+}
+
+/* Candy Theme */
+body[theme="candy"] {
+  --background: #ffe4e1;
+  --background2: #ffdab9;
+  --background3: #ffb6c1;
+  --background4: #ff69b4;
+  --shadow: rgba(255, 105, 180, 0.3);
+  --blue: #6dd5ed;
+  --green: #84fab0;
+  --mauve: #f781f3;
+  --text: #d2691e;
+}
