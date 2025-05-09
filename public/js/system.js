@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.setAttribute('theme', savedTheme);
   }
 
+  const quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+  
   if (localStorage.getItem("aboutblankEnabled") === "true") {
     let iFramed
     try {
