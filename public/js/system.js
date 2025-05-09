@@ -9,7 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.setAttribute('theme', savedTheme);
   }
 
-  const quill = new Quill('#editor', {
+  var quill = new Quill('#editor', {
+    modules: {
+      toolbar: '#toolbar'
+    },
     theme: 'snow'
   });
   
