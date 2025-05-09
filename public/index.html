@@ -895,6 +895,79 @@
                </div>
             </div>
          </div>
+         <div id="toolbar">
+            <span class="ql-formats">
+               <select class="ql-font">
+                  <option selected>Sans Serif</option>
+                  <option value="serif">Serif</option>
+                  <option value="monospace">Monospace</option>
+               </select>
+               <select class="ql-size">
+                  <option value="small">Small</option>
+                  <option selected>Normal</option>
+                  <option value="large">Large</option>
+                  <option value="huge">Huge</option>
+               </select>
+            </span>
+            <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+            </span>
+            <span class="ql-formats">
+            <select class="ql-color"></select>
+            <select class="ql-background"></select>
+            </span>
+            <span class="ql-formats">
+            <button class="ql-script" value="sub"></button>
+            <button class="ql-script" value="super"></button>
+            </span>
+            <span class="ql-formats">
+            <button class="ql-header" value="1"></button>
+            <button class="ql-header" value="2"></button>
+            <button class="ql-blockquote"></button>
+            <button class="ql-code-block"></button>
+            </span>
+            <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+            <button class="ql-indent" value="-1"></button>
+            <button class="ql-indent" value="+1"></button>
+            </span>
+            <span class="ql-formats">
+               <button class="ql-direction" value="rtl"></button>
+               <select class="ql-align">
+                  <option selected></option>
+                  <option value="center"></option>
+                  <option value="right"></option>
+                  <option value="justify"></option>
+               </select>
+            </span>
+            <span class="ql-formats">
+            <button class="ql-link"></button>
+            <button class="ql-image"></button>
+            <button class="ql-video"></button>
+            <button class="ql-formula"></button>
+            </span>
+            <span class="ql-formats">
+            <button class="ql-clean"></button>
+            </span>
+         </div>
+         <style>
+            #toolbar {
+            border: 1px solid #ccc;
+            font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; /* Optional: for consistent font */
+            }
+            #toolbar button,
+            #toolbar select {
+            margin-right: 5px;
+            }
+            #editor {
+            height: 500px; /* Increased height for more content */
+            border: 1px solid #ccc;
+            }
+         </style>
          <div class="page" id="ai-page">
             <div class="ai-container">
                <div class="ai-menu">
@@ -919,32 +992,28 @@
          </div>
          <div class="page" id="settings-page">
             <h1><a href="javascript:void(0);" onclick="triggerEasterEgg()">S</a>ettings</h1>
-            
             <style>
-              #fire-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-image: url('https://cdn.pixabay.com/animation/2024/05/07/23/28/23-28-45-140_512.gif');
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-position: center;
-                mix-blend-mode: overlay; /* Experiment with other modes */
-                pointer-events: none; /* Allows clicks to pass through the overlay */
-                z-index: 9999; /* Ensure it's on top of everything */
-                opacity: 0; /* Initially hidden */
-                transition: opacity 0.3s ease-in-out; /* Optional smooth fade-in */
-              }
-            
-              body.on-fire #fire-overlay {
-                opacity: 1;
-              }
+               #fire-overlay {
+               position: fixed;
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               background-image: url('https://cdn.pixabay.com/animation/2024/05/07/23/28/23-28-45-140_512.gif');
+               background-size: cover;
+               background-repeat: no-repeat;
+               background-position: center;
+               mix-blend-mode: overlay; /* Experiment with other modes */
+               pointer-events: none; /* Allows clicks to pass through the overlay */
+               z-index: 9999; /* Ensure it's on top of everything */
+               opacity: 0; /* Initially hidden */
+               transition: opacity 0.3s ease-in-out; /* Optional smooth fade-in */
+               }
+               body.on-fire #fire-overlay {
+               opacity: 1;
+               }
             </style>
-            
             <div id="fire-overlay"></div>
-            
             <script>
                function triggerEasterEgg() {
                   document.body.classList.add('on-fire');
