@@ -9,7 +9,7 @@
 * **🌐 Web Proxy:** Bypass restrictions and access the web freely with the built-in web proxy.
 * 🎮 **Games:** Enjoy a collection of engaging web-based games directly within your browser.
 * 🎨 **Draw:** Express your artistic side with a built-in drawing tool.
-* 🤖 **AI:** Leverage the power of integrated Artificial Intelligence for various tasks (specific AI features not detailed here - explore the "AI" tab!).
+* 🤖 **AI:** Leverage the power of integrated Artificial Intelligence for various tasks.
 * ⚙️ **Customizable Settings:** Tailor your Zirconium experience with a wide range of customizable options.
 * 🌈 **Tons of Themes:** Personalize the look and feel of Zirconium with a vast selection of themes.
 * 📝 **Notes:** Keep your thoughts organized with a simple and accessible note-taking tool.
@@ -56,8 +56,6 @@ Customize your Zirconium experience through the "Settings" tab located in the bo
 *(Will add later)*
 
 ## 💻 Technologies Used
-
-*(List the primary technologies used in the development of Zirconium. Examples:*
 
 * **Frontend:** HTML, CSS, JavaScript
 * **Frameworks/Libraries:** ParticleJS
